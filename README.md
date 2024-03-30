@@ -5,7 +5,7 @@ Desenvolvimento de um software com framework web que utilize noções de banco d
 
 |**Integrantes**|
 | :- |
-|<p><br></p><p>add</p><p>Raphael Douglas Tozetto de Paula,2201206</p><p>Murilo César Pinheiro Tomy, 2212600</p><p>Stéfanie de Moura Visoto, 2216684</p><p>Carolina Figueira da Silva, 2230531</p><p>Denise Helena Galhardo Nogueira - 2215788</p><p>Érica Francine da Costa, 2224478</p><p>Rodrigo Furtado Chaves, 2225000</p><p>Durval Giannotti Carvalho – 2225392</p>|
+|<p><br></p><p>Raphael Douglas Tozetto de Paula 2201206</p><p>Murilo César Pinheiro Tomy 2212600</p><p>Stéfanie de Moura Visoto 2216684</p><p>Carolina Figueira da Silva 2230531</p><p>Denise Helena Galhardo Nogueira 2215788</p><p>Érica Francine da Costa 2224478</p><p>Rodrigo Furtado Chaves 2225000</p><p>Durval Giannotti Carvalho 2225392</p>|
 
 
 |**Disciplina**|<p>Projeto Integrador em computação I – Turma 002;</p><p>Código: PJI110-Sala-002Grupo-011.</p>|
@@ -22,15 +22,12 @@ Desenvolvimento de um software com framework web que utilize noções de banco d
 
 **Descreva o processo de escolha do local de realização do PI.**
 
-*Orientação para o preenchimento: É esperado que o grupo descreva o processo de escolha do local, identificando as seguintes ações: quais outras opções de comunidades externas existiam ou se existiam; como chegaram até essas comunidades; quais ações e decisões tomaram em grupo para a escolha da comunidade participante do projeto.*
-
 |<p></p><p>O processo de escolha do local se deu por intermédio de um participante do grupo, o Rodrigo Furtado. Na primeira reunião de grupo, foi comentado por ele sobre um projeto do qual ele participa ativamente, que motiva jovens estudantes de escolas públicas e privadas a conhecerem e aplicarem conhecimentos relacionados a robótica. </p><p>Na reunião foi feita uma breve explicação ao grupo e à orientadora sobre os objetivos e desafios enfrentados. Foi apresentado por ele também um link na internet com mais informações sobre a história do projeto, que serviu como fonte de informações. </p><p>As discussões em grupo seguiram. Neste momento, o grupo buscava ainda por outras ideias e inspirações. Nenhuma outra ideia de projeto ou de comunidade externa se mostrou viável, levando em consideração a difícil disponibilidade de tempo que o grupo possui, uma vez que todos trabalham em horário comercial, além de estarem cursando outras matérias do curso de computação.</p><p>Foi então decidido pelo grupo a seguir com esta ideia.</p>|
 | :- |
 
 
 **Descreva como foi a conversa com a comunidade externa que participará do projeto e que acolheu o grupo.**
 
-*Orientação para o preenchimento: É esperado que o grupo descreva a primeira visita à comunidade externa, identificando as seguintes ações: com qual(is) pessoa(s) conversou(ram) e sua posição na empresa/escola/etc.; descrição do local da visita; percepções do grupo quanto ao seu primeiro contato.*
 
 |<p>A conversa propriamente dita com a comunidade externa ainda não ocorreu, como já dito anteriormente, a aproximação foi feita por intermédio do Rodrigo. </p><p>Mas pretende-se fazer um levantamento por meio de entrevistas sobre as necessidades operacionais do projeto, para tentar descobrir qual a maior dificuldade enfrentada pelos participantes, a fim de saber em que área seria mais eficaz a implantação do software / aplicação web.</p>|
 | :- |
@@ -39,14 +36,12 @@ Desenvolvimento de um software com framework web que utilize noções de banco d
 
 **Descreva, a partir da conversa com a comunidade externa, quais problemas podem ser pesquisados e que se relacionam com o tema norteador definido pela Univesp.**
 
-*Orientação para o preenchimento: É esperado que o grupo descreva ao menos um problema e sua relação com o tema norteador definido pela Univesp.*
 
 |<p>Foram levantadas pelo grupo questões como:</p><p>→ Gerenciamento de materiais,</p><p>→ Site para financiamento coletivo do projeto: seja para o custeio de materiais, para financiar as viagens de deslocamento dos jovens aos locais de competição dos robôs, ou até mesmo para a venda de produtos, visando obter fundos para a sustentabilidade do projeto.</p><p>Estas questões estão diretamente relacionadas com o tema escolhido pela Univesp, além de estarem relacionadas aos conteúdos dos cursos do eixo de computação. </p><p>Os assuntos abordados no projeto escolhido possuem relação direta com o tema da Univesp e com os conteúdos abordados no curso, como por exemplo: banco de dados, programação, internet/Web, pensamento computacional, metodologia de design thinking, desenvolvimento e inovação de produtos, ética e sociedade, matemática básica, desenvolvimento de projetos, produção de textos e metodologia científica, entre outros.</p>|
 | :- |
 
 **Frente ao tema norteador e aos problemas levantados junto à comunidade externa, descreva qual o tema específico a ser trabalho pelo grupo no PI.** 
 
-*Orientação para o preenchimento: É esperado que o grupo descreva o tema que será trabalhado no Projeto Integrador e sua relação com o tema norteador definido pela Univesp.*
 
 |<p>O tema geral é o desenvolvimento do software  / aplicação Web para que seja utilizado no projeto social que atende diretamente à comunidade de Taubaté, tema proposto pela Univesp.</p><p>Os objetivos específicos deste projeto integrador estão relacionados à sustentabilidade e sobrevivência financeira do projeto de robótica, para que ele continue atendendo a esta comunidade.</p>|
 | :- |
@@ -54,7 +49,6 @@ Desenvolvimento de um software com framework web que utilize noções de banco d
 
 **Plano de Ação**
 
-*Orientação para o preenchimento: É esperado que o grupo identifique em todas as quinzenas: as atividades de maneira detalhada; os integrantes do grupo responsáveis por elas (todos os integrantes precisam ser listados); as datas de início e de finalização (conclusão da atividade) para cada uma delas. Além disso, ao descrever a atividade, note se há relação com o objetivo proposto para cada quinzena.*
 
 |<p>**Quinzena 1**</p><p>**Objetivo:** Analisar o cenário do projeto e iniciar o levantamento bibliográfico para abordar o problema.</p>|||||
 | :- | :- | :- | :- | :- |
