@@ -50,7 +50,7 @@ Desenvolvimento de um software com framework web que utilize noções de banco d
 **Plano de Ação**
 
 
-|<p>**Quinzena 1**</p><p>**Objetivo:** Analisar o cenário do projeto e iniciar o levantamento bibliográfico para abordar o problema.</p>|||||
+|<p>**Quinzena 1**</p>||||<p>**Objetivo:** Analisar o cenário do projeto e iniciar o levantamento bibliográfico para abordar o problema.</p>|
 | :- | :- | :- | :- | :- |
 |Atividade|Responsável|Início|Finalização|Observação|
 ||Murilo|19fev|03mar|Afastamento médico|
@@ -63,7 +63,7 @@ Desenvolvimento de um software com framework web que utilize noções de banco d
 |Busca das primeiras referências bibliográficas|Denise|19fev|03mar||
 
 
-|<p>**Quinzena 2**</p><p>**Objetivo:** Interagir com a comunidade externa, definir o problema e organizar o plano de ação.</p>|||||
+|<p>**Quinzena 2**</p>||||<p>**Objetivo:** Interagir com a comunidade externa, definir o problema e organizar o plano de ação.</p>|
 | :- | :- | :- | :- | :- |
 |Atividade|Responsável|Início|Finalização|Observação|
 |Criar o formulário com as questões|Murilo|04mar|12mar||
@@ -77,7 +77,7 @@ Desenvolvimento de um software com framework web que utilize noções de banco d
 
 
 
-|<p>**Quinzena 3**</p><p>**Objetivo:** Definir título do trabalho, visitar o local de pesquisa, dar continuidade ao desenvolvimento do trabalho.</p>|||||
+|<p>**Quinzena 3**</p>||||<p>**Objetivo:** Definir título do trabalho, visitar o local de pesquisa, dar continuidade ao desenvolvimento do trabalho.</p>|
 | :- | :- | :- | :- | :- |
 |Atividade|Responsável|Início|Finalização|Observação|
 |Revisão bibliográfica|Murilo|18mar|31mar||
@@ -91,7 +91,7 @@ Desenvolvimento de um software com framework web que utilize noções de banco d
 
 
 
-|<p>**Quinzena 4**</p><p>**Objetivo:** Construir e apresentar a solução inicial (Relatório Parcial); coletar sugestões com a comunidade externa; entregar o Relatório Parcial (conforme modelos disponíveis no AVA).</p>|||||
+|<p>**Quinzena 4**</p>||||<p>**Objetivo:** Construir e apresentar a solução inicial (Relatório Parcial); coletar sugestões com a comunidade externa; entregar o Relatório Parcial (conforme modelos disponíveis no AVA).</p>|
 | :- | :- | :- | :- | :- |
 |Atividade|Responsável|Início|Finalização|Observação|
 |<p>Tabulação de dados</p><p>Revisão das melhorias sugeridas</p>|Murilo|01abr|15abr||
@@ -104,7 +104,7 @@ Desenvolvimento de um software com framework web que utilize noções de banco d
 |Ideação e prototipagem|Denise|01abr|07abr||
 
 
-|<p>**Quinzena 5**</p><p>**Objetivo:** Construir a solução final, com base nas sugestões do Relatório Parcial.</p>|||||
+|<p>**Quinzena 5**</p>||||<p>**Objetivo:** Construir a solução final, com base nas sugestões do Relatório Parcial.</p>|
 | :- | :- | :- | :- | :- |
 |Atividade|Responsável|Início|Finalização|Observação|
 |Revisão bibliográfica|Murilo|18mar|31mar||
@@ -118,7 +118,7 @@ Desenvolvimento de um software com framework web que utilize noções de banco d
 
 
 
-|<p>**Quinzena 6**</p><p>**Objetivo:** Analisar os resultados, finalizar o protótipo e preparar o Vídeo de apresentação.</p>|||||
+|<p>**Quinzena 6**</p>||||<p>**Objetivo:** Analisar os resultados, finalizar o protótipo e preparar o Vídeo de apresentação.</p>|
 | :- | :- | :- | :- | :- |
 |Atividade|Responsável|Início|Finalização|Observação|
 |Analisar e implementar a solução para uso em larga escala |Murilo|18mar|31mar||
@@ -130,7 +130,7 @@ Desenvolvimento de um software com framework web que utilize noções de banco d
 |Documentar e compartilhar as lições aprendidas com outras organizações e projetos.|Durval|25mar|31mar||
 |Realizar uma avaliação abrangente do projeto e do processo de aprendizagem para identificar sucessos, desafios e áreas de melhoria (tanto na solução apresentada quanto no trabalho em grupo)|Denise|18mar|24mar||
 
-|<p>**Quinzena 7**</p><p>**Objetivo:** Concluir e entregar o Relatório Final e o Vídeo de apresentação.</p>|||||
+|<p>**Quinzena 7**</p>||||<p>**Objetivo:** Concluir e entregar o Relatório Final e o Vídeo de apresentação.</p>|
 | :- | :- | :- | :- | :- |
 |Atividade|Responsável|Início|Finalização|Observação|
 |Avaliação Colaborativa|Murilo|13mai|21mai||
