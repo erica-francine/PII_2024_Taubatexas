@@ -32,5 +32,5 @@ class Usuarios extends Model {
 }
 
 
-module.exports = Categorias
+module.exports = Usuarios
 
