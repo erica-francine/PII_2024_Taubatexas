@@ -24,6 +24,7 @@ const routes = require('./src/routes/routes')
 const db = require('./src/database/index')
 
 
+
 db.authenticate()
   .then(() => {
     console.log('Conexão bem-sucedida.');

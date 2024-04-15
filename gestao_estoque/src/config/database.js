@@ -1,4 +1,4 @@
-// const { underscoredIf } = require("sequelize/lib/utils");
+const { underscoredIf } = require("sequelize/lib/utils");
 
 module.exports = {
     dialect:"mysql",
