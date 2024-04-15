@@ -1,15 +1,15 @@
 const { Model, DataTypes } = require('sequelize');
 
-class Categorias extends Model {
+class Estoques extends Model {
     static init(sequelize) {
         super.init({
-            id_categoria: {
+            id_estoque: {
                 type: DataTypes.INTEGER,
                 primaryKey: true,
                 autoIncrement: true,
                 allowNull: false,
             },
-            descricao_categoria: {
+            localizacao_estoque: {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
@@ -17,11 +17,10 @@ class Categorias extends Model {
             updated_at: DataTypes.DATE
         }, {
             sequelize,
-            tableName: 'categorias'
+            tableName: 'estoque'
         });
     }
 }
 
 
-module.exports = Categorias
-
+module.exports = Estoques

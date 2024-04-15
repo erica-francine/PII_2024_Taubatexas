@@ -1,6 +1,6 @@
 'use strict';
 
-/** @type {import('sequelize-cli').Migration} */
+
 module.exports = {
   up (queryInterface, Sequelize) {
     return queryInterface.createTable('estoque', {
@@ -10,7 +10,7 @@ module.exports = {
         autoIncrement:true,
         allowNull: false,
       },
-      descricao_estoque: {
+      localizacao_estoque: {
         type: Sequelize.STRING,
         allowNull: false,
       },
