@@ -3,6 +3,7 @@ const routes = express.Router();
 const CategoriaController = require('../controllers/CategoriaController');
 const EstoqueController = require('../controllers/EstoqueController');
 const UsuariosController = require('../controllers/UsuariosController');
+const FornecedorController = require('../controllers/FornecedorController')
 
 
 routes.get('/',(req, res)=>{
@@ -22,5 +23,11 @@ routes.post('/usuarios', express.urlencoded({extended: true}), UsuariosControlle
 routes.post('/usuarios/inativar', express.urlencoded({extended: true}), UsuariosController.inativarUsuario)
 routes.post('/usuarios/ativar', express.urlencoded({extended: true}), UsuariosController.ativarUsuario)
 routes.delete('/usuarios', express.urlencoded({extended: true}), UsuariosController.deletarUsuario)
+
+routes.get('/fornecedores', FornecedorController.listarFornecedores)
+routes.post('/fornecedores', express.urlencoded({extended: true}), FornecedorController.criarFornecedor)
+routes.post('/fornecedores/inativar', express.urlencoded({extended: true}), FornecedorController.inativarFornecedor)
+routes.post('/fornecedores/ativar', express.urlencoded({extended: true}), FornecedorController.ativarFornecedor)
+routes.delete('/fornecedores', express.urlencoded({extended: true}), FornecedorController.deletarFornecedor)
 
 module.exports = routes;
