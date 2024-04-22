@@ -3,18 +3,26 @@ const Estoque = require('../models/Estoque');
 module.exports = {
 
     async criarEstoque(req, res){
-        const localizacao_estoque = req.body;
+        try {
+            const localizacao_estoque = req.body;
 
-        const estoque = await Estoque.create(localizacao_estoque)
+            const estoque = await Estoque.create(localizacao_estoque);
 
-        return res.send(estoque)
+            return res.send(estoque);
+        } catch (error) {
+            console.error("Erro ao criar estoque:", error);
+            return res.status(500).send({ error: "Erro ao criar o estoque. Por favor, tente novamente." });
+        }
     },
 
 
     async listarEstoques(req, res){
-        const estoques = await Estoque.findAll()
-
-        res.send(estoques)
-
+        try {
+            const estoques = await Estoque.findAll();
+            res.send(estoques);
+        } catch (error) {
+            console.error("Erro ao listar estoques:", error);
+            return res.status(500).send({ error: "Erro ao obter a lista de estoques. Por favor, tente novamente." });
+        }
     }
-}
+};
