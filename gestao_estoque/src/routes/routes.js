@@ -6,6 +6,8 @@ const UsuariosController = require('../controllers/UsuariosController');
 const FornecedorController = require('../controllers/FornecedorController')
 const ProjetoController = require('../controllers/ProjetoController')
 const EnderecoController = require('../controllers/EnderecosController')
+const RoboController = require('../controllers/RoboController')
+
 
 routes.get('/',(req, res)=>{
     return res.send('Hello World')
@@ -38,6 +40,10 @@ routes.delete('/projetos', express.urlencoded({extended: true}), ProjetoControll
 
 
 routes.post('/fornecedores/:id_fornecedor/enderecos', express.urlencoded({extended: true}), EnderecoController.criarEndereco)
-routes.delete('/fornecedores/:id_fornecedor/enderecos', express.urlencoded({extended: true}), EnderecoController.deletarEndereco)
+routes.delete('/fornecedores/:id_fornecedor/enderecos/:id_endereco', express.urlencoded({extended: true}), EnderecoController.deletarEndereco)
+
+routes.get('/robos', RoboController.listarRobos)
+routes.post('/projetos/:id_projeto/robos', express.urlencoded({extended: true}), RoboController.criarRobo)
+routes.delete('/projetos/:id_projeto/robos/:id_robo', express.urlencoded({extended: true}), RoboController.deletarRobo)
 
 module.exports = routes;

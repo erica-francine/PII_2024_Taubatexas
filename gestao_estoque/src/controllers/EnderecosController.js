@@ -49,10 +49,10 @@ module.exports = {
 
 
     async deletarEndereco(req, res) {
-        const { id_fornecedor } = req.params;
+        const { id_endereco } = req.params;
 
         try {
-            const endereco = await Endereco.findByPk(id_fornecedor);
+            const endereco = await Endereco.findByPk(id_endereco);
 
             if (!endereco) {
                 return res.status(404).send({ error: "Endereço não encontrado." });
