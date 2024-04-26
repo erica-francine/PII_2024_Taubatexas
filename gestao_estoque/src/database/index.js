@@ -7,6 +7,8 @@ const Fornecedor = require('../models/Fornecedor');
 const Projeto = require('../models/Projeto');
 const Enderecos = require('../models/Endereco_Fornecedor')
 const Robo = require('../models/Robo')
+const Materiais = require('../models/Material')
+
 const connection = new Sequelize(dbConfig)
 
 Categoria.init(connection);
@@ -16,6 +18,6 @@ Fornecedor.init(connection);
 Projeto.init(connection);
 Enderecos.init(connection);
 Robo.init(connection);
-
+Materiais.init(connection);
 
 module.exports = connection;

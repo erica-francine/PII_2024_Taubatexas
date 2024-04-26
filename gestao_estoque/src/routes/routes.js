@@ -7,7 +7,7 @@ const FornecedorController = require('../controllers/FornecedorController')
 const ProjetoController = require('../controllers/ProjetoController')
 const EnderecoController = require('../controllers/EnderecosController')
 const RoboController = require('../controllers/RoboController')
-
+const MateriaisController = require('../controllers/MateriaisController')
 
 routes.get('/',(req, res)=>{
     return res.send('Hello World')
@@ -45,5 +45,11 @@ routes.delete('/fornecedores/:id_fornecedor/enderecos/:id_endereco', express.url
 routes.get('/robos', RoboController.listarRobos)
 routes.post('/projetos/:id_projeto/robos', express.urlencoded({extended: true}), RoboController.criarRobo)
 routes.delete('/projetos/:id_projeto/robos/:id_robo', express.urlencoded({extended: true}), RoboController.deletarRobo)
+
+routes.get('/materiais', MateriaisController.listarMateriais)
+routes.post('/materiais', express.urlencoded({extended: true}), MateriaisController.cadastrarMaterial)
+routes.post('/materiais/:id_material', MateriaisController.ativarMaterial)
+routes.post('/materiais/:id_material', MateriaisController.inativarMaterial)
+routes.delete('/materiais/:id_material', MateriaisController.deletarMaterial)
 
 module.exports = routes;
