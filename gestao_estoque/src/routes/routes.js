@@ -8,6 +8,8 @@ const ProjetoController = require('../controllers/ProjetoController')
 const EnderecoController = require('../controllers/EnderecosController')
 const RoboController = require('../controllers/RoboController')
 const MateriaisController = require('../controllers/MateriaisController')
+const MovController = require('../controllers/MovimentacaoController')
+
 
 routes.get('/',(req, res)=>{
     return res.send('Hello World')
@@ -51,5 +53,10 @@ routes.post('/materiais', express.urlencoded({extended: true}), MateriaisControl
 routes.post('/materiais/:id_material', MateriaisController.ativarMaterial)
 routes.post('/materiais/:id_material', MateriaisController.inativarMaterial)
 routes.delete('/materiais/:id_material', MateriaisController.deletarMaterial)
+
+
+// routes.get('/movimentacoes', MovController.listarMov)
+// routes.post('/movimentacoes/:tipo_movimentacao', express.urlencoded({extended: true}, )
+
 
 module.exports = routes;

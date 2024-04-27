@@ -10,13 +10,6 @@ class Enderecos extends Model {
                 allowNull: false,
             },
 
-            id_fornecedor: {
-                type: DataTypes.INTEGER,
-                allowNull: false,
-                references: { model: 'fornecedores', key: 'id_fornecedor' },
-                onUpdate: 'CASCADE',
-                onDelete: 'CASCADE',
-            },
 
             logradouro_endereco_fornecedor: DataTypes.STRING,
 
@@ -53,6 +46,10 @@ class Enderecos extends Model {
             sequelize,
             tableName: 'endereco_fornecedor'
         });
+    }
+
+    static associate(models){
+        this.belongsTo(models.Fornecedores, {foreignKey: 'id_fornecedor', as: 'fornecedor'})
     }
 }
 

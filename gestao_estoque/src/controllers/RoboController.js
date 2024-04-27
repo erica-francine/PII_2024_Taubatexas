@@ -8,7 +8,7 @@ module.exports = {
         try {
 
             const {id_projeto} = req.params;
-            const {id_robo, nome_robo, tipo_robo } = req.body;
+            const {nome_robo, tipo_robo } = req.body;
     
             const projeto = await Projeto.findByPk(id_projeto)
 

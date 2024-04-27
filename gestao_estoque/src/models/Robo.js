@@ -10,13 +10,6 @@ class Robos extends Model {
                 allowNull: false,
             },
 
-            id_projeto: {
-                type: DataTypes.INTEGER,
-                references: { model: 'projetos', key: 'id_projeto' },
-                onUpdate: 'CASCADE',
-                onDelete: 'SET NULL',
-            },
-
             nome_robo: {
                 type: DataTypes.STRING,
                 allowNull: false
@@ -30,6 +23,10 @@ class Robos extends Model {
             sequelize,
             tableName: 'robos'
         });
+    }
+
+    static associate(models){
+        this.belongsTo(models.Projetos, {foreignKey: 'id_projeto', as: 'projeto'})
     }
 }
 

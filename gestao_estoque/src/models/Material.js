@@ -9,24 +9,7 @@ class Materiais extends Model {
                 autoIncrement:true,
                 allowNull: false,
               },
-        
-              id_categoria:{
-                type: DataTypes.INTEGER,
-                allowNull: false,
-                references: { model: 'categorias', key: 'id_categoria'},
-                onUpdate: 'CASCADE',
-                onDelete: 'RESTRICT',
-              },
-        
-        
-              id_estoque:{
-                type: DataTypes.INTEGER,
-                references: { model: 'estoque', key: 'id_estoque'},
-                onUpdate: 'CASCADE',
-                onDelete: 'SET NULL',
-              },
-        
-        
+       
               descricao_material: {
                 type: DataTypes.STRING,
                 allowNull: false
@@ -54,6 +37,13 @@ class Materiais extends Model {
             tableName: 'materiais'
         });
     }
+
+
+    static associate(models){
+      this.belongsTo(models.Categorias, {foreignKey: 'id_categoria', as: 'categoria'})
+      this.belongsTo(models.Estoques, {foreignKey: 'id_estoque', as: 'estoque'})
+
+  }
 }
 
 
