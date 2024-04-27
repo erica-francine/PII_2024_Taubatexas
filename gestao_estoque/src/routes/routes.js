@@ -40,7 +40,7 @@ routes.get('/projetos', ProjetoController.listarProjetos)
 routes.post('/projetos', express.urlencoded({extended: true}), ProjetoController.criarProjeto)
 routes.delete('/projetos', express.urlencoded({extended: true}), ProjetoController.deletarProjeto)
 
-
+routes.get('/fornecedores/:id_fornecedor/enderecos', EnderecoController.listarEnderecos)
 routes.post('/fornecedores/:id_fornecedor/enderecos', express.urlencoded({extended: true}), EnderecoController.criarEndereco)
 routes.delete('/fornecedores/:id_fornecedor/enderecos/:id_endereco', express.urlencoded({extended: true}), EnderecoController.deletarEndereco)
 

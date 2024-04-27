@@ -22,6 +22,7 @@ Robo.init(connection);
 Materiais.init(connection);
 Movimentacao.init(connection)
 
+Fornecedor.associate(connection.models);
 Enderecos.associate(connection.models);
 Materiais.associate(connection.models);
 Movimentacao.associate(connection.models);

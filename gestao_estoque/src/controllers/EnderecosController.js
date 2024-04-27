@@ -48,6 +48,32 @@ module.exports = {
 
 
 
+    async listarEnderecos(req, res){
+
+        try {
+            const {id_fornecedor} = req.params
+
+            const fornecedor = await Fornecedor.findByPk(id_fornecedor, {
+                include: { association: 'enderecos'}
+
+            })
+
+            if(!fornecedor){
+                res.status(400).send({error: 'Fornecedor não encontrado.'})
+            }
+            
+            return res.send(fornecedor.enderecos);
+
+        } catch (error) {
+
+            console.error("Erro ao listar endereços:", error);
+
+            return res.status(500).send({ error: "Erro ao obter a lista de endereços. Por favor, tente novamente." });
+        }
+
+    },
+
+
     async deletarEndereco(req, res) {
         const { id_endereco } = req.params;
 
