@@ -1,0 +1,32 @@
+            </select>
+
+        </section>
+
+        <section id="movimentacaoEstoque">
+
+            <h2>Movimentação do Estoque</h2>
+
+            <p>Será inserida aqui a funcionalidade para movimentação do estoque.</p>
+
+        </section>
+
+        <section id="relatorioInventario">
+
+            <h2>Relatórios do Inventário</h2>
+
+            <p>Teremos a funcionalidade para visualização do relatório do inventário.</p>
+
+        </section>
+
+    </div>
+
+    <script>
+
+        // Adicionar interatividade com JavaScript aqui.
+
+    </script>
+
+</body>
+
+</html>
+
