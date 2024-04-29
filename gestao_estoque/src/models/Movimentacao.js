@@ -34,6 +34,7 @@ class Movimentacoes extends Model {
         this.belongsTo(models.Fornecedores, {foreignKey: 'id_fornecedor', as: 'fornecedor'})
         this.belongsTo(models.Usuarios, {foreignKey: 'id_usuario', as: 'usuario'})
         this.belongsTo(models.Robos, {foreignKey: 'id_robo', as: 'robo'})
+        this.hasMany(models.Itens_Movimentacoes, {foreignKey: 'id_movimentacao', as: 'itens_movimentacoes'})
   
     }
 }

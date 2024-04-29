@@ -3,6 +3,8 @@ const Usuario = require('../models/Usuario')
 const Robo = require('../models/Robo')
 const Mov = require('../models/Movimentacao')
 
+
+
 module.exports = {
 
     async realizarMov(req, res){
@@ -26,11 +28,15 @@ module.exports = {
                 res.status(400).send({error: `Robo não encontrado.` })
             }
 
+            //Verificando se estou passando itens para a movimentação
+            if(!req.body.itensMovimentacao || req.body.itensMovimentacao.length == 0 ){
+                return res.status(400).send({error: 'Nenhum item adicionado na movimentação.'})
+            }
             
             const movimentacao = await Mov.create({ id_fornecedor, id_usuario, id_robo, data_movimentacao, tipo_movimentacao });
     
             return res.send(movimentacao);
-            
+
 
 
         } catch (error) {

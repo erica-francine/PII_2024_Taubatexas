@@ -29,6 +29,10 @@ class Usuarios extends Model {
             tableName: 'usuarios'
         });
     }
+    static associate(models){
+        this.hasMany(models.Movimentacoes, {foreignKey: 'id_usuario', as: 'movimentacoes'})
+        
+    }
 }
 
 

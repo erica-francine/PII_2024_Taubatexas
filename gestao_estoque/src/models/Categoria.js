@@ -20,6 +20,9 @@ class Categorias extends Model {
             tableName: 'categorias'
         });
     }
+    static associate(models){
+        this.hasMany(models.Materiais, {foreignKey:'id_categoria', as: 'materiais'})
+    }
 }
 
 

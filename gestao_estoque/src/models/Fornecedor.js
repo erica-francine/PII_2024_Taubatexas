@@ -35,6 +35,7 @@ class Fornecedores extends Model {
 
     static associate(models){
         this.hasMany(models.Enderecos, { foreignKey: 'id_fornecedor', as: 'enderecos'} )
+        this.hasMany(models.Movimentacoes, {foreignKey: 'id_fornecedor', as: 'movimentacoes'})
     }
 }
 

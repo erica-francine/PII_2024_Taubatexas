@@ -20,6 +20,10 @@ class Projetos extends Model {
             tableName: 'projetos'
         });
     }
+
+    static associate(models){
+      this.hasMany(models.Robos, {foreignKey: 'id_projeto', as: 'robos'})
+  }
 }
 
 

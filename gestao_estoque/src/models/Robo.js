@@ -27,6 +27,7 @@ class Robos extends Model {
 
     static associate(models){
         this.belongsTo(models.Projetos, {foreignKey: 'id_projeto', as: 'projeto'})
+        this.hasMany(models.Movimentacoes, {foreignKey: 'id_robo', as: 'movimentacoes'})
     }
 }
 

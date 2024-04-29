@@ -42,6 +42,7 @@ class Materiais extends Model {
     static associate(models){
       this.belongsTo(models.Categorias, {foreignKey: 'id_categoria', as: 'categoria'})
       this.belongsTo(models.Estoques, {foreignKey: 'id_estoque', as: 'estoque'})
+      this.hasMany(models.Itens_Movimentacoes, {foreignKey: 'id_material', as: 'itens_movimentacoes'})
 
   }
 }

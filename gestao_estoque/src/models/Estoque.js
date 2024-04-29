@@ -20,6 +20,11 @@ class Estoques extends Model {
             tableName: 'estoque'
         });
     }
+
+    static associate(models){
+        this.hasMany(models.Materiais, {foreignKey:'id_estoque', as: 'materiais'})
+
+    }
 }
 
 
