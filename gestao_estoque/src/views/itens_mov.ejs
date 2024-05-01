@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Itens</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Adicionando ícones do Font Awesome para a lupa -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Adicionar Itens</h1>
+        <form>
+            <div class="form-group">
+                <label for="codigo">Código:</label>
+                <div class="input-group">
+                    <input type="text" id="codigo" name="codigo" class="form-control" placeholder="Digite o código do item">
+                    <div class="input-group-append">
+                        <span class="input-group-text"><i class="fas fa-search"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="descricao">Descrição:</label>
+                <input type="text" id="descricao" name="descricao" class="form-control" placeholder="Descrição do item">
+            </div>
+            <div class="form-group">
+                <label for="quantidade">Quantidade:</label>
+                <input type="number" id="quantidade" name="quantidade" class="form-control" placeholder="Quantidade" min="0" step="1">
+            </div>
+            <div class="form-group">
+                <label for="unidade">Unidade de Medida:</label>
+                <input type="text" id="unidade" name="unidade" class="form-control" placeholder="Ex: kg, L, unidade, etc.">
+            </div>
+            <button type="submit" class="btn btn-primary">Adicionar Item</button>
+            <button type="button" class="btn btn-secondary" onclick="history.back();">Cancelar</button>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS e dependências -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

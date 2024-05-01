@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Entrada</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+
+    <% if(tipo_movimentacao === 'entrada') {%>
+        <div id="entrada" class="container mt-5">
+            <h1 class="mb-3">Entrada de Material</h1>
+            <form>
+                <div class="form-group">
+                    <label for="data">Data:</label>
+                    <input type="date" id="data" name="data" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="fornecedor">Fornecedor:</label>
+                    <input type="text" id="fornecedor" name="fornecedor" class="form-control" placeholder="Nome do Fornecedor">
+                </div>
+                <!-- Botão Add sozinho e com tom verde -->
+                <button type="button" class="btn btn-success mb-3">Add</button>
+                
+                <!-- Botões Enviar e Cancelar mais abaixo -->
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                    <button type="button" class="btn btn-secondary">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    <% }else if(tipo_movimentacao === 'saida') {%>
+
+ 
+        <div id="saida" class="container mt-5">
+            <h1 class="mb-3">Saída de Material</h1>
+            <form>
+                <div class="form-group">
+                    <label for="data">Data:</label>
+                    <input type="date" id="data" name="data" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="usuario">Usuário:</label>
+                    <input type="text" id="usuario" name="usuario" class="form-control" placeholder="Nome do Usuário">
+                </div>
+                <div class="form-group">
+                    <label for="robo">Robô Destino:</label>
+                    <input type="text" id="robo" name="robo" class="form-control" placeholder="Identificação do Robô">
+                </div>
+                <!-- Botão Add sozinho e com tom verde -->
+                <button type="button" class="btn btn-success mb-3">Add</button>
+                
+                <!-- Botões Enviar e Cancelar mais abaixo -->
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                    <button type="button" class="btn btn-secondary">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    <%}%>
+
+
+    <!-- Bootstrap JS e dependências -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

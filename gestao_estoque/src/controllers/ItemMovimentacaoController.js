@@ -1,9 +1,10 @@
 const Material = require('../models/Material')
 const Item_Movimentacao = require('../models/Item_Movimentacao')
 
+
 module.exports = {
 
-    async addItemMov(req, res){
+    async addItemMov(req, res, next){
 
         try {
             const { id_movimentacao} = req.params;
@@ -17,7 +18,12 @@ module.exports = {
             
             const item_movimentacao = await Item_Movimentacao.create({ id_movimentacao, id_material, qtde_material });
     
-            return res.send(item_movimentacao);
+
+            res.send(item_movimentacao);
+            res.redirect('/movimentacoes')
+
+            next()
+
             
 
 
@@ -28,6 +34,7 @@ module.exports = {
             return res.status(500).send({ error: "Erro ao adicionar item na movimentação. Por favor, tente novamente." });
         }
         
+       
     },
 
     async listarItensMov(req, res){
@@ -63,6 +70,7 @@ module.exports = {
             return res.status(500).send({ error: "Erro ao deletar item da movimentação" });
         }
     },
+
 
    
 }

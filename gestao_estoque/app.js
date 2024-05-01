@@ -22,7 +22,7 @@ const app = express()
 const PORT = 3000
 const routes = require('./src/routes/routes')
 const db = require('./src/database/index')
-
+const path = require('path')
 
 
 db.authenticate()
@@ -32,6 +32,13 @@ db.authenticate()
   .catch(err => {
     console.error('Erro ao conectar-se ao banco de dados:', err);
   });
+
+
+app.use(express.static(path.join(__dirname, 'src', 'public')));
+
+
+app.set('view engine', 'ejs')
+app.set('views', path.join(__dirname, 'src', 'views'))
 
   
 app.use(routes)

@@ -12,14 +12,14 @@ const MovController = require('../controllers/MovimentacaoController')
 const ItemController = require('../controllers/ItemMovimentacaoController')
 
 routes.get('/',(req, res)=>{
-    return res.send('Hello World')
-} )
+    res.render('index', {error:false, body:{}})
+}, MateriaisController.listarMateriais)
 
 
 routes.get('/categorias', CategoriaController.listarCategorias)
 routes.post('/categorias', express.urlencoded({extended: true}), CategoriaController.criarCategoria)
 
-0
+
 routes.get('/estoques', EstoqueController.listarEstoques)
 routes.post('/estoques',express.urlencoded({extended: true}), EstoqueController.criarEstoque)
 
@@ -54,10 +54,18 @@ routes.post('/materiais/:id_material', MateriaisController.ativarMaterial)
 routes.post('/materiais/:id_material', MateriaisController.inativarMaterial)
 routes.delete('/materiais/:id_material', MateriaisController.deletarMaterial)
 
-
-routes.get('/movimentacoes', MovController.listarMov)
-// routes.post('/movimentacoes/:tipo_movimentacao', express.urlencoded({extended: true}, )
-
 routes.get('/movimentacoes/itens_movimentacao', ItemController.listarItensMov)
+routes.get('/movimentacoes', MovController.listarMov,)
+routes.get('/movimentacoes/:tipo_movimentacao', (req, res)=>{
+    res.render('mov', {error:false, body:{}, tipo_movimentacao: req.params.tipo_movimentacao})
+})
+
+routes.get('/movimentacoes/:tipo_movimentacao/itens_movimentacao', (req, res)=>{
+    res.render('itens_mov', {error:false, body:{}})
+})
+
+
+routes.post('/movimentacoes/:tipo_movimentacao', express.urlencoded({extended: true}, MovController.realizarMov, ItemController.addItemMov,MovController.attEstoque))
+
 
 module.exports = routes;

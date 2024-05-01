@@ -38,8 +38,18 @@ module.exports = {
 
     async listarMateriais(req, res){
         try {
-            const materiais = await Material.findAll();
+
+            const materiais = await Material.findAll({
+                include: [{
+                    model: Categoria, 
+                    as: 'categoria', 
+                    attributes: ['descricao_categoria'] 
+                }]
+            });
+
+
             res.send(materiais);
+
         } catch (error) {
 
             console.error("Erro ao listar materiais:", error);
