@@ -61,11 +61,11 @@ routes.get('/movimentacoes/:tipo_movimentacao', (req, res)=>{
 })
 
 routes.get('/movimentacoes/:tipo_movimentacao/itens_movimentacao', (req, res)=>{
-    res.render('itens_mov', {error:false, body:{}})
+    res.render('itens_mov', {error:false, body:{}, tipo_movimentacao: req.params.tipo_movimentacao})
 })
 
 
-routes.post('/movimentacoes/:tipo_movimentacao', express.urlencoded({extended: true}, MovController.realizarMov, ItemController.addItemMov,MovController.attEstoque))
+routes.post('/movimentacoes/:tipo_movimentacao', MovController.realizarMov, ItemController.addItemMov,MovController.attEstoque)
 
 
 module.exports = routes;

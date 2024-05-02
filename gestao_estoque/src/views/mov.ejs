@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,24 +8,41 @@
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
+    <div class="container my-5">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb breadcrumb-custom overflow-hidden text-center bg-body-tertiary border rounded-3">
+                <li class="breadcrumb-item">
+                    <a id="goBackButton" class="link-body-emphasis fw-semibold text-decoration-none" href="/">
+                        <svg class="bi" width="16" height="16">
+                            <use xlink:href="#house-door-fill"></use>
+                        </svg>
+                        Home
+                    </a>
+                </li>
+            </ol>
+        </nav>
+    </div>
 
-
-    <% if(tipo_movimentacao === 'entrada') {%>
+    <% if(tipo_movimentacao==='entrada' ) {%>
         <div id="entrada" class="container mt-5">
             <h1 class="mb-3">Entrada de Material</h1>
-            <form>
+            <form id="formEntrada">
                 <div class="form-group">
                     <label for="data">Data:</label>
-                    <input type="date" id="data" name="data" class="form-control">
+                    <input type="date" id="data" name="data_movimentacao" class="form-control">
                 </div>
                 <div class="form-group">
                     <label for="fornecedor">Fornecedor:</label>
-                    <input type="text" id="fornecedor" name="fornecedor" class="form-control" placeholder="Nome do Fornecedor">
+                    <input type="text" id="fornecedor" name="id_fornecedor" class="form-control"
+                        placeholder="Nome do Fornecedor">
                 </div>
                 <!-- Botão Add sozinho e com tom verde -->
-                <button type="button" class="btn btn-success mb-3">Add</button>
-                
+
+                <button type="button" class="btn btn-success mb-3"
+                    onclick="addItens('<%= tipo_movimentacao %>')">Add</button>
+
                 <!-- Botões Enviar e Cancelar mais abaixo -->
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">Enviar</button>
@@ -32,40 +50,155 @@
                 </div>
             </form>
         </div>
-    <% }else if(tipo_movimentacao === 'saida') {%>
-
- 
-        <div id="saida" class="container mt-5">
-            <h1 class="mb-3">Saída de Material</h1>
-            <form>
-                <div class="form-group">
-                    <label for="data">Data:</label>
-                    <input type="date" id="data" name="data" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="usuario">Usuário:</label>
-                    <input type="text" id="usuario" name="usuario" class="form-control" placeholder="Nome do Usuário">
-                </div>
-                <div class="form-group">
-                    <label for="robo">Robô Destino:</label>
-                    <input type="text" id="robo" name="robo" class="form-control" placeholder="Identificação do Robô">
-                </div>
-                <!-- Botão Add sozinho e com tom verde -->
-                <button type="button" class="btn btn-success mb-3">Add</button>
-                
-                <!-- Botões Enviar e Cancelar mais abaixo -->
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Enviar</button>
-                    <button type="button" class="btn btn-secondary">Cancelar</button>
-                </div>
-            </form>
-        </div>
-    <%}%>
+        <% }else if(tipo_movimentacao==='saida' ) {%>
 
 
-    <!-- Bootstrap JS e dependências -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+            <div id="saida" class="container mt-5">
+                <h1 class="mb-3">Saída de Material</h1>
+                <form id="formSaida">
+                    <div class="form-group">
+                        <label for="data">Data:</label>
+                        <input type="date" id="data" name="data_movimentacao" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="usuario">Matrícula Usuário:</label>
+                        <input type="text" id="usuario" name="id_usuario" class="form-control"
+                            placeholder="Nome do Usuário">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><a href="/usuarios"><i class="fas fa-search"></i></a></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="robo">Robô Destino:</label>
+                        <input type="text" id="robo" name="id_robo" class="form-control"
+                            placeholder="Identificação do Robô">
+                    </div>
+                    <!-- Botão Add sozinho e com tom verde -->
+                    <button type="button" class="btn btn-success mb-3"
+                        onclick="addItens('<%= tipo_movimentacao %>')">Add</button>
+
+                    <!-- Botões Enviar e Cancelar mais abaixo -->
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Enviar</button>
+                        <button type="button" class="btn btn-secondary">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+            <%}%>
+
+                <div class="container mt-5">
+                    <h1>Materiais</h1>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Descrição</th>
+                                <th>Quantidade</th>
+                                <th>Unidade de Medida</th>
+                            </tr>
+                        </thead>
+                        <tbody id="TabelaItens">
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Bootstrap JS e dependências -->
+
+
+                <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+                <script>
+                    window.onload = function () {
+                        const itens = JSON.parse(sessionStorage.getItem('dadosItem'))
+                        if (itens) {
+                            itens.forEach(dadosItem => {
+                                const tableRow = `<tr>
+                        <td>${dadosItem.id_material}</td>
+                        <td>${dadosItem.descricao_material}</td>
+                        <td>${dadosItem.quantidade_material}</td>
+                        <td>${dadosItem.unid_medida_material}</td>
+                        <td><i class="fas fa-trash" ></i></td>
+                        <td><i class="fas fa-pencil-alt"></i></td>
+
+                    </tr>`;
+                                document.getElementById('TabelaItens').innerHTML += tableRow;
+                            })
+
+                        }
+                    }
+
+
+                    function addItens(tipo_movimentacao) {
+                        // Redireciona para a URL de adicionar itens à movimentação, com o tipo especificado
+                        window.location.href = `/movimentacoes/${tipo_movimentacao}/itens_movimentacao`;
+
+                    }
+
+                    function dadosArmazenados(tipo_movimentacao) {
+                        // Recuperar os dados do sessionStorage
+                        const dadosSalvos = sessionStorage.getItem('dadosItem');
+                        const dadosParaEnvio = JSON.parse(dadosSalvos);
+                        const formEntrada = document.getElementById('formEntrada');
+                        const formSaida = document.getElementById('formSaida');
+
+                        
+                        const dadosFormatados = dadosParaEnvio.map(item => ({
+                            id_material: item.id_material,
+                            quantidade_material: item.quantidade_material
+                        }));
+
+
+
+                        const dadosEntrada = {
+                            data_movimentacao: formEntrada.data_movimentacao.value,
+                            id_fornecedor: formEntrada.id_fornecedor.value,
+                            id_material: dadosFormatados.id_material,
+                            quantidade_material: dadosFormatados.quantidade_material
+                        } 
+                        // Mapear os dados para o formato esperado pelo backend
+
+
+                        const dadosSaida = {
+                            data_movimentacao: formSaida.data_movimentacao.value,
+                            id_usuario: formSaida.id_usuario.value,
+                            id_robo: formSaida.id_robo.value,
+                            id_material: dadosFormatados.id_material,
+                            quantidade_material: dadosFormatados.quantidade_material
+                        } 
+
+
+                        return tipo_movimentacao === 'entrada' ? dadosEntrada : dadosSaida;
+
+                        
+                    }
+                    
+                    function enviarDados(tipo_movimentacao){
+                        // Enviar os dados coletados para o backend
+                        const dados = dadosArmazenados(tipo_movimentacao)
+
+                        fetch(`/movimentacoes/${tipo_movimentacao}`, {
+                            method: 'POST', 
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+
+                            body: JSON.stringify(dados)
+                        })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Network response was not ok');
+                                }
+                                return response.json();
+                            })
+                            .then(data => console.log('Dados enviados com sucesso:', data))
+                            .catch(error => console.error('Erro ao enviar dados:', error));
+
+                    }
+
+
+
+                </script>
 </body>
+
 </html>

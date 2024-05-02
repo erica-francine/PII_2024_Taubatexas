@@ -12,27 +12,27 @@
 <body>
     <div class="container mt-5">
         <h1 class="mb-4">Adicionar Itens</h1>
-        <form>
+        <form onsubmit="event.preventDefault(); addItem();">
             <div class="form-group">
-                <label for="codigo">Código:</label>
+                <label for="material">Código:</label>
                 <div class="input-group">
-                    <input type="text" id="codigo" name="codigo" class="form-control" placeholder="Digite o código do item">
+                    <input type="text" id="material" name="id_material" class="form-control" placeholder="Digite o código do item">
                     <div class="input-group-append">
-                        <span class="input-group-text"><i class="fas fa-search"></i></span>
+                        <span class="input-group-text"><a href="/materiais"><i class="fas fa-search"></i></a></span>
                     </div>
                 </div>
             </div>
             <div class="form-group">
                 <label for="descricao">Descrição:</label>
-                <input type="text" id="descricao" name="descricao" class="form-control" placeholder="Descrição do item">
+                <input type="text" id="descricao" name="descricao_material" class="form-control" placeholder="Descrição do item">
             </div>
             <div class="form-group">
                 <label for="quantidade">Quantidade:</label>
-                <input type="number" id="quantidade" name="quantidade" class="form-control" placeholder="Quantidade" min="0" step="1">
+                <input type="number" id="quantidade" name="quantidade_material" class="form-control" placeholder="Quantidade" min="0" step="1">
             </div>
             <div class="form-group">
                 <label for="unidade">Unidade de Medida:</label>
-                <input type="text" id="unidade" name="unidade" class="form-control" placeholder="Ex: kg, L, unidade, etc.">
+                <input type="text" id="unidade" name="unid_medida_material" class="form-control" placeholder="Ex: kg, L, unidade, etc.">
             </div>
             <button type="submit" class="btn btn-primary">Adicionar Item</button>
             <button type="button" class="btn btn-secondary" onclick="history.back();">Cancelar</button>
@@ -43,5 +43,26 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function addItem(){
+
+            var tipoMovimentacao = "<%= tipo_movimentacao %>"
+            const dadosItem =  {
+                id_material: document.getElementById('material').value,
+                descricao_material: document.getElementById('descricao').value,
+                quantidade_material: document.getElementById('quantidade').value,
+                unid_medida_material: document.getElementById('unidade').value
+            };
+            let itens = JSON.parse(sessionStorage.getItem('dadosItem')) || [];
+            itens.push(dadosItem)
+
+            sessionStorage.setItem('dadosItem', JSON.stringify(itens));
+            window.location.href = `/movimentacoes/${tipoMovimentacao}`;
+
+        }
+
+
+
+    </script>
 </body>
 </html>

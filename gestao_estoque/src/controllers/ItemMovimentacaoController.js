@@ -7,19 +7,41 @@ module.exports = {
     async addItemMov(req, res, next){
 
         try {
-            const { id_movimentacao} = req.params;
-            const {id_material, qtde_material} = req.body;
+            const { id_movimentacao} = req.body;
+            const {itens_movimentacao} = req.body
 
-            const material = await Material.findByPk(id_material)
-                    
-            if(!material){
-                res.status(400).send({error: `Material não encontrado.` })
+
+
+            if (!itens_movimentacao || itens_movimentacao.length === 0) {
+                return res.status(400).send({ error: "Nenhum item para movimentação foi fornecido." });
             }
-            
-            const item_movimentacao = await Item_Movimentacao.create({ id_movimentacao, id_material, qtde_material });
     
+            const resultados = []
 
-            res.send(item_movimentacao);
+            for (const item of itens_movimentacao) {
+                const material = await Material.findByPk(item.id_material);
+                
+                if (!material) {
+
+                    return res.status(404).send({ error: `Material não encontrado para o ID: ${item.id_material}. Processo interrompido.` });
+    
+                }
+                
+                const itemMovimentacao = await Item_Movimentacao.create({
+                    id_movimentacao, // Usando o mesmo ID de movimentação para todos os itens
+                    id_material: item.id_material,
+                    quantidade_material: item.quantidade_material
+                });
+    
+                resultados.push(itemMovimentacao); // Armazena o resultado para resposta final
+            }
+    
+            if (resultados.length === 0) {
+                return res.status(404).send({ error: "Nenhum material válido encontrado para os IDs fornecidos." });
+            }
+    
+            res.status(200).send(resultados); // Envia todos os itens de movimentação criados
+
             res.redirect('/movimentacoes')
 
             next()

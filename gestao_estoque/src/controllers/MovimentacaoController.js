@@ -13,7 +13,7 @@ module.exports = {
             const { tipo_movimentacao } = req.params;
 
 
-            const { id_fornecedor, id_usuario, id_robo, data_movimentacao } = req.body;
+            const { id_fornecedor, id_usuario, id_robo, data_movimentacao, itens_movimentacao } = req.body;
 
 
 
@@ -21,26 +21,20 @@ module.exports = {
             const usuario = await Usuario.findByPk(id_usuario)
             const robo = await Robo.findByPk(id_robo)
 
-            if (!fornecedor) {
-                res.status(400).send({ error: `Fornecedor não encontrado.` })
+            if (!fornecedor || !usuario || !robo) {
+                return res.status(400).send({ error: `Fornecedor, usuário ou robô não encontrado.` });
             }
-
-            if (!usuario) {
-                res.status(400).send({ error: `Usuario não encontrado.` })
-            }
-
-            if (!robo) {
-                res.status(400).send({ error: `Robo não encontrado.` })
-            }
+    
 
             //Verificando se estou passando itens para a movimentação
-            if (!req.body.itensMovimentacao || req.body.itensMovimentacao.length == 0) {
-                return res.status(400).send({ error: 'Nenhum item adicionado na movimentação.' })
+            if (!itens_movimentacao || itens_movimentacao.length === 0) {
+                return res.status(400).send({ error: 'Nenhum item adicionado na movimentação.' });
             }
 
             const movimentacao = await Mov.create({ id_fornecedor, id_usuario, id_robo, data_movimentacao, tipo_movimentacao });
 
-            res.send(movimentacao)
+
+            req.id_movimentacao = movimentacao.id_movimentacao;
 
             next()
 
@@ -95,6 +89,7 @@ module.exports = {
 
             const { tipo_movimentacao } = req.params
             const { itens_movimentacao } = req.body
+            const movimentacao = req.body.movimentacao
 
             for (const item of itens_movimentacao) {
 
