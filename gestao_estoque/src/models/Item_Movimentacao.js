@@ -6,15 +6,14 @@ class Itens_Movimentacoes extends Model {
             id_item_movimentacao: {
                 type: DataTypes.INTEGER,
                 primaryKey: true,
-                autoIncrement:true,
+                autoIncrement: true,
                 allowNull: false,
-              },
-    
-        
-              qtd_itens_mov:{
+            },
+
+            quantidade_material: {
                 type: DataTypes.DOUBLE,
                 allowNull: false
-              },
+            },
 
             created_at: DataTypes.DATE,
             updated_at: DataTypes.DATE
@@ -24,9 +23,9 @@ class Itens_Movimentacoes extends Model {
         });
     }
 
-    static associate(models){
-        this.belongsTo(models.Materiais, {foreignKey: 'id_material', as: 'material'})
-        this.belongsTo(models.Movimentacoes, {foreignKey: 'id_movimentacao', as: 'movimentacao'})
+    static associate(models) {
+        this.belongsTo(models.Materiais, { foreignKey: 'id_material', as: 'material' })
+        this.belongsTo(models.Movimentacoes, { foreignKey: 'id_movimentacao', as: 'movimentacao' })
 
     }
 }

@@ -5,44 +5,51 @@ const Item_Movimentacao = require('../models/Item_Movimentacao')
 module.exports = {
 
     async addItemMov(req, res, next){
+        const t = req.transaction; 
 
         try {
-            const { id_movimentacao} = req.body;
+            const id_movimentacao = req.id_movimentacao;
             const {itens_movimentacao} = req.body
 
 
 
             if (!itens_movimentacao || itens_movimentacao.length === 0) {
-                return res.status(400).send({ error: "Nenhum item para movimentação foi fornecido." });
+                
+                throw new Error("Nenhum item foi fornecido para movimentação");
             }
     
             const resultados = []
 
             for (const item of itens_movimentacao) {
-                const material = await Material.findByPk(item.id_material);
+                const material = await Material.findByPk(item.id_material, { transaction: t });
                 
                 if (!material) {
 
-                    return res.status(404).send({ error: `Material não encontrado para o ID: ${item.id_material}. Processo interrompido.` });
+                    throw new Error(`Material não encontrado para Código: ${item.id_material}`);
     
                 }
                 
                 const itemMovimentacao = await Item_Movimentacao.create({
-                    id_movimentacao, // Usando o mesmo ID de movimentação para todos os itens
+                    id_movimentacao,
                     id_material: item.id_material,
                     quantidade_material: item.quantidade_material
-                });
+                }, { transaction: t });
     
                 resultados.push(itemMovimentacao); // Armazena o resultado para resposta final
             }
+
+            
     
             if (resultados.length === 0) {
-                return res.status(404).send({ error: "Nenhum material válido encontrado para os IDs fornecidos." });
+
+                throw new Error(`Nenhum material válido encontrado para os Códigos fornecidos}`);
+  
             }
     
-            res.status(200).send(resultados); // Envia todos os itens de movimentação criados
 
-            res.redirect('/movimentacoes')
+            // await t.commit();
+
+
 
             next()
 
@@ -51,9 +58,11 @@ module.exports = {
 
         } catch (error) {
   
+            await t.rollback();
+
             console.error("Erro ao adicionar item na movimentação", error);
 
-            return res.status(500).send({ error: "Erro ao adicionar item na movimentação. Por favor, tente novamente." });
+            return res.status(500).send({ error: "Erro ao realizar movimentação. Por favor, tente novamente." });
         }
         
        

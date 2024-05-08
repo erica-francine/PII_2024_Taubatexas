@@ -3,11 +3,12 @@ const Usuario = require('../models/Usuario')
 const Robo = require('../models/Robo')
 const Mov = require('../models/Movimentacao')
 const Material = require('../models/Material')
-
+const connection = require('../database/index')
 
 module.exports = {
 
     async realizarMov(req, res, next) {
+        const t = await connection.transaction();
 
         try {
             const { tipo_movimentacao } = req.params;
@@ -16,34 +17,58 @@ module.exports = {
             const { id_fornecedor, id_usuario, id_robo, data_movimentacao, itens_movimentacao } = req.body;
 
 
-
-            const fornecedor = await Fornecedor.findByPk(id_fornecedor)
-            const usuario = await Usuario.findByPk(id_usuario)
-            const robo = await Robo.findByPk(id_robo)
-
-            if (!fornecedor || !usuario || !robo) {
-                return res.status(400).send({ error: `Fornecedor, usuário ou robô não encontrado.` });
-            }
-    
-
             //Verificando se estou passando itens para a movimentação
+
+
             if (!itens_movimentacao || itens_movimentacao.length === 0) {
-                return res.status(400).send({ error: 'Nenhum item adicionado na movimentação.' });
+
+                throw new Error('Nenhum item adicionado na movimentação.');
+
             }
 
-            const movimentacao = await Mov.create({ id_fornecedor, id_usuario, id_robo, data_movimentacao, tipo_movimentacao });
+            if (tipo_movimentacao === 'entrada') {
+                const fornecedor = await Fornecedor.findByPk(id_fornecedor, { transaction: t });
+                if (!fornecedor) {
+                    throw new Error(`Fornecedor não encontrado.`);
+                }
 
 
-            req.id_movimentacao = movimentacao.id_movimentacao;
+                movimentacao = await Mov.create({ id_fornecedor, data_movimentacao, tipo_movimentacao }, { transaction: t });
+                req.id_movimentacao = movimentacao.id_movimentacao;
+
+
+            } else if (tipo_movimentacao === 'saida') {
+                const usuario = await Usuario.findByPk(id_usuario, { transaction: t });
+                const robo = await Robo.findByPk(id_robo, { transaction: t });
+
+
+                if (!usuario) {
+                    throw new Error(`Usuario não encontrado.`);
+                }
+
+                if (!robo) {
+                    throw new Error(`Robo não encontrado.`);
+                }
+
+                movimentacao = await Mov.create({ id_usuario, id_robo, data_movimentacao, tipo_movimentacao }, { transaction: t });
+                req.id_movimentacao = movimentacao.id_movimentacao;
+
+            } else {
+                throw new Error('Tipo de movimentação inválida.');
+
+
+            }
+
+
+            req.transaction = t;
 
             next()
 
-            
+
 
         } catch (error) {
-
+            await t.rollback();
             console.error("Erro ao realizar movimentação", error);
-
             return res.status(500).send({ error: "Erro ao realizar movimentação. Por favor, tente novamente." });
         }
 
@@ -83,20 +108,21 @@ module.exports = {
         }
     },
 
-    async attEstoque(req, res, next) {
+    async attEstoque(req, res) {
+        const t = req.transaction;
 
         try {
 
             const { tipo_movimentacao } = req.params
             const { itens_movimentacao } = req.body
-            const movimentacao = req.body.movimentacao
+
 
             for (const item of itens_movimentacao) {
 
-                const material = await Material.findByPk(item.id_material)
+                const material = await Material.findByPk(item.id_material, { transaction: t });
 
                 if (!material) {
-                    return res.status(404).send({ error: `Material não encontrado` });
+                    throw new Error(`Material não encontrado`)
                 }
 
                 if (tipo_movimentacao === 'entrada') {
@@ -109,13 +135,17 @@ module.exports = {
                     material.quantidade_material -= item.quantidade_material
                 }
 
-                await material.save()
+                await material.save({ transaction: t });
             }
 
-            next()
+            await t.commit();
+
+            res.status(200).send({ message: "Movimentação realizada com sucesso." });
 
         } catch (error) {
-            res.status(500).send({error: `Erro ao dar ${tipo_movimentacao} nos materiais`})
+            await t.rollback();
+            console.error("Erro ao atualizar estoque", error);
+            return res.status(500).send({ error: "Erro ao realizar movimentação. Por favor, tente novamente." });
         }
 
     }

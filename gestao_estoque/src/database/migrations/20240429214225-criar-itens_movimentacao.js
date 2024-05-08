@@ -16,6 +16,7 @@ module.exports = {
         references: { model: 'materiais', key: 'id_material'},
         onUpdate: 'CASCADE',
         onDelete: 'RESTRICT',
+        allowNull: false
       },
 
       
@@ -24,9 +25,10 @@ module.exports = {
         references: { model: 'movimentacoes', key: 'id_movimentacao'},
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
+        allowNull: false
       },
 
-      qtd_itens_mov:{
+      quantidade_material:{
         type: Sequelize.DOUBLE,
         allowNull: false
       },
