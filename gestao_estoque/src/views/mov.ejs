@@ -35,8 +35,13 @@
                 </div>
                 <div class="form-group">
                     <label for="fornecedor">Fornecedor:</label>
-                    <input type="text" id="fornecedor" name="id_fornecedor" class="form-control"
-                        placeholder="Nome do Fornecedor">
+                    <input list="fornecedores" id="fornecedor" name="fornecedor_nome" class="form-control"
+                        placeholder="Selecione um fornecedor" autocomplete="off">
+
+                    <!-- Datalist para preencher com valores do backend -->
+                    <datalist id="fornecedores">
+                        <!-- Este campo será preenchido dinamicamente -->
+                    </datalist>
                 </div>
                 <!-- Botão Add sozinho e com tom verde -->
 
@@ -49,6 +54,21 @@
                     <button type="button" class="btn btn-secondary">Cancelar</button>
                 </div>
             </form>
+        </div>
+        <div class="container mt-5">
+            <h1>Materiais</h1>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Descrição</th>
+                        <th>Quantidade</th>
+                        <th>Unidade de Medida</th>
+                    </tr>
+                </thead>
+                <tbody id="tabela_entrada">
+                </tbody>
+            </table>
         </div>
         <% }else if(tipo_movimentacao==='saida' ) {%>
 
@@ -84,23 +104,24 @@
                     </div>
                 </form>
             </div>
+            <div class="container mt-5">
+                <h1>Materiais</h1>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Descrição</th>
+                            <th>Quantidade</th>
+                            <th>Unidade de Medida</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela_saida">
+                    </tbody>
+                </table>
+            </div>
             <%}%>
 
-                <div class="container mt-5">
-                    <h1>Materiais</h1>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Código</th>
-                                <th>Descrição</th>
-                                <th>Quantidade</th>
-                                <th>Unidade de Medida</th>
-                            </tr>
-                        </thead>
-                        <tbody id="TabelaItens">
-                        </tbody>
-                    </table>
-                </div>
+
 
                 <!-- Bootstrap JS e dependências -->
 
@@ -109,22 +130,60 @@
                 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
                 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
                 <script>
+
+
                     window.onload = function () {
-                        const itens = JSON.parse(sessionStorage.getItem('dadosItem'))
+
+                        const tipo_movimentacao = '<%= tipo_movimentacao %>';
+
+                        const storage_key = tipo_movimentacao === 'entrada' ? 'dados_entrada' : 'dados_saida';
+
+
+                        const itens = JSON.parse(sessionStorage.getItem(storage_key));
+
+
                         if (itens) {
                             itens.forEach(dadosItem => {
                                 const tableRow = `<tr>
-                        <td>${dadosItem.id_material}</td>
-                        <td>${dadosItem.descricao_material}</td>
-                        <td>${dadosItem.quantidade_material}</td>
-                        <td>${dadosItem.unid_medida_material}</td>
-                        <td><i class="fas fa-trash" ></i></td>
-                        <td><i class="fas fa-pencil-alt"></i></td>
+                            <td>${dadosItem.id_material}</td>
+                            <td>${dadosItem.descricao_material}</td>
+                            <td>${dadosItem.quantidade_material}</td>
+                            <td>${dadosItem.unid_medida_material}</td>
+                            <td><i class="fas fa-trash" ></i></td>
+                            <td><i class="fas fa-pencil-alt"></i></td>
 
-                    </tr>`;
-                                document.getElementById('TabelaItens').innerHTML += tableRow;
+                            </tr>`;
+
+
+                                if (tipo_movimentacao === 'entrada') {
+                                    document.getElementById('tabela_entrada').innerHTML += tableRow;
+                                }
+
+                                if (tipo_movimentacao === 'saida') {
+                                    document.getElementById('tabela_saida').innerHTML += tableRow;
+                                }
+
                             })
 
+                        }
+
+                        const formEntrada = document.getElementById('formEntrada');
+                        const formSaida = document.getElementById('formSaida');
+
+
+
+                        if (formEntrada) {
+                            formEntrada.addEventListener('submit', function (event) {
+                                event.preventDefault()
+                                enviarDados('entrada')
+                            })
+                        }
+
+                        if (formSaida) {
+                            formSaida, addEventListener('submit', function (event) {
+                                event.preventDefault()
+                                enviarDados('saida')
+                            })
                         }
                     }
 
@@ -135,50 +194,61 @@
 
                     }
 
-                    function dadosArmazenados(tipo_movimentacao) {
-                        // Recuperar os dados do sessionStorage
-                        const dadosSalvos = sessionStorage.getItem('dadosItem');
-                        const dadosParaEnvio = JSON.parse(dadosSalvos);
-                        const formEntrada = document.getElementById('formEntrada');
-                        const formSaida = document.getElementById('formSaida');
 
-                        
+                    function dadosArmazenados(tipo_movimentacao) {
+
+                        const storage_key = tipo_movimentacao === 'entrada' ? 'dados_entrada' : 'dados_saida';
+
+                        // Recuperar os dados do sessionStorage
+                        const dadosSalvos = sessionStorage.getItem(storage_key);
+
+                        const dadosParaEnvio = JSON.parse(dadosSalvos);
+
+
                         const dadosFormatados = dadosParaEnvio.map(item => ({
                             id_material: item.id_material,
                             quantidade_material: item.quantidade_material
                         }));
 
 
+                        if (tipo_movimentacao === 'entrada') {
+                            const formEntrada = document.getElementById('formEntrada');
+                            return {
+                                data_movimentacao: formEntrada.data_movimentacao.value,
+                                id_fornecedor: formEntrada.id_fornecedor.value,
+                                itens_movimentacao: dadosFormatados
+                            };
 
-                        const dadosEntrada = {
-                            data_movimentacao: formEntrada.data_movimentacao.value,
-                            id_fornecedor: formEntrada.id_fornecedor.value,
-                            id_material: dadosFormatados.id_material,
-                            quantidade_material: dadosFormatados.quantidade_material
-                        } 
+                        } else if (tipo_movimentacao === 'saida') {
+                            const formSaida = document.getElementById('formSaida');
+                            return {
+                                data_movimentacao: formSaida.data_movimentacao.value,
+                                id_usuario: formSaida.id_usuario.value,
+                                id_robo: formSaida.id_robo.value,
+                                itens_movimentacao: dadosFormatados
+
+                            };
+
+                        }
+
+
                         // Mapear os dados para o formato esperado pelo backend
 
 
-                        const dadosSaida = {
-                            data_movimentacao: formSaida.data_movimentacao.value,
-                            id_usuario: formSaida.id_usuario.value,
-                            id_robo: formSaida.id_robo.value,
-                            id_material: dadosFormatados.id_material,
-                            quantidade_material: dadosFormatados.quantidade_material
-                        } 
 
-
-                        return tipo_movimentacao === 'entrada' ? dadosEntrada : dadosSaida;
-
-                        
                     }
-                    
-                    function enviarDados(tipo_movimentacao){
+
+                    function enviarDados(tipo_movimentacao) {
                         // Enviar os dados coletados para o backend
+
+                        const storage_key = tipo_movimentacao === 'entrada' ? 'dados_entrada' : 'dados_saida';
+
                         const dados = dadosArmazenados(tipo_movimentacao)
 
+
+
                         fetch(`/movimentacoes/${tipo_movimentacao}`, {
-                            method: 'POST', 
+                            method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
                             },
@@ -191,12 +261,34 @@
                                 }
                                 return response.json();
                             })
-                            .then(data => console.log('Dados enviados com sucesso:', data))
-                            .catch(error => console.error('Erro ao enviar dados:', error));
+                            .then(data => {
+                                // Limpar o `sessionStorage` após o envio bem-sucedido
+                                sessionStorage.removeItem(storage_key);
+
+                                limparTabela(tipo_movimentacao);
+
+
+                                // Exibir uma mensagem ao usuário, extraída do `data`
+                                if (data.message) {
+                                    alert(data.message); // Ou use SweetAlert para mensagens mais sofisticadas
+                                } else {
+                                    alert('Dados enviados com sucesso!');
+                                }
+                            })
+                            .catch(error => {
+                                console.error("Erro ao enviar dados:", error);
+                                alert('Houve um erro ao enviar os dados. Por favor, tente novamente.');
+                            });
 
                     }
 
-
+                    function limparTabela(tipo_movimentacao) {
+                        const tabela_id = tipo_movimentacao === 'entrada' ? 'tabela_entrada' : 'tabela_saida';
+                        const tabela = document.getElementById(tabela_id);
+                        if (tabela) {
+                            tabela.innerHTML = ''; // Limpar a tabela
+                        }
+                    }
 
                 </script>
 </body>

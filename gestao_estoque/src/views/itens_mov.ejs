@@ -46,18 +46,25 @@
     <script>
         function addItem(){
 
-            var tipoMovimentacao = "<%= tipo_movimentacao %>"
+            var tipo_movimentacao = "<%= tipo_movimentacao %>"
+
             const dadosItem =  {
                 id_material: document.getElementById('material').value,
                 descricao_material: document.getElementById('descricao').value,
                 quantidade_material: document.getElementById('quantidade').value,
                 unid_medida_material: document.getElementById('unidade').value
             };
-            let itens = JSON.parse(sessionStorage.getItem('dadosItem')) || [];
+
+
+            const storage_key = tipo_movimentacao === 'entrada' ? 'dados_entrada' : 'dados_saida';
+
+            let itens = JSON.parse(sessionStorage.getItem(storage_key)) || [];
+
             itens.push(dadosItem)
 
-            sessionStorage.setItem('dadosItem', JSON.stringify(itens));
-            window.location.href = `/movimentacoes/${tipoMovimentacao}`;
+
+            sessionStorage.setItem(storage_key, JSON.stringify(itens));
+            window.location.href = `/movimentacoes/${tipo_movimentacao}`;
 
         }
 

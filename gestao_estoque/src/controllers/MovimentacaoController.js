@@ -125,14 +125,16 @@ module.exports = {
                     throw new Error(`Material não encontrado`)
                 }
 
+                const qtd_material = parseFloat(item.quantidade_material)
+
                 if (tipo_movimentacao === 'entrada') {
-                    material.quantidade_material += item.quantidade_material
+                    material.quantidade_material += qtd_material
                 } else if (tipo_movimentacao === 'saida') {
-                    if (material.quantidade_material < item.quantidade_material) {
+                    if (material.quantidade_material < qtd_material) {
                         throw new Error(`Quantidade insuficiente de ${material.descricao_material} no estoque`)
                     }
 
-                    material.quantidade_material -= item.quantidade_material
+                    material.quantidade_material -= qtd_material
                 }
 
                 await material.save({ transaction: t });
