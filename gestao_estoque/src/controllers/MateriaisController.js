@@ -43,13 +43,13 @@ module.exports = {
                 include: [{
                     model: Categoria, 
                     as: 'categoria', 
-                    attributes: ['descricao_categoria'] 
+                    attributes: ['descricao_categoria', 'id_categoria'] 
                 }]
             });
 
 
             // res.json(materiais);
-            res.render('materiais', {materiais: materiais})
+            res.render('materiais', {materiais: materiais, tipo_movimentacao: req.params.tipo_movimentacao})
 
         } catch (error) {
 

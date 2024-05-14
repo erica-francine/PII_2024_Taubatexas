@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
     <!-- Adicionando ícones do Font Awesome para a lupa -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
 </head>
+
 <body>
     <div class="container mt-5">
         <h1 class="mb-4">Adicionar Itens</h1>
@@ -16,23 +18,27 @@
             <div class="form-group">
                 <label for="material">Código:</label>
                 <div class="input-group">
-                    <input type="text" id="material" name="id_material" class="form-control" placeholder="Digite o código do item">
+                    <input type="text" id="material" name="id_material" class="form-control"
+                        placeholder="Digite o código do item">
                     <div class="input-group-append">
-                        <span class="input-group-text"><a href="/materiais"><i class="fas fa-search"></i></a></span>
+                        <span class="input-group-text" onclick="redirect()"><i class="fas fa-search"></i></a></span>
                     </div>
                 </div>
             </div>
             <div class="form-group">
                 <label for="descricao">Descrição:</label>
-                <input type="text" id="descricao" name="descricao_material" class="form-control" placeholder="Descrição do item">
+                <input type="text" id="descricao" name="descricao_material" class="form-control"
+                    placeholder="Descrição do item">
             </div>
             <div class="form-group">
                 <label for="quantidade">Quantidade:</label>
-                <input type="number" id="quantidade" name="quantidade_material" class="form-control" placeholder="Quantidade" min="0" step="1">
+                <input type="number" id="quantidade" name="quantidade_material" class="form-control"
+                    placeholder="Quantidade" min="0" step="1">
             </div>
             <div class="form-group">
                 <label for="unidade">Unidade de Medida:</label>
-                <input type="text" id="unidade" name="unid_medida_material" class="form-control" placeholder="Ex: kg, L, unidade, etc.">
+                <input type="text" id="unidade" name="unid_medida_material" class="form-control"
+                    placeholder="Ex: kg, L, unidade, etc.">
             </div>
             <button type="submit" class="btn btn-primary">Adicionar Item</button>
             <button type="button" class="btn btn-secondary" onclick="history.back();">Cancelar</button>
@@ -44,11 +50,13 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        function addItem(){
 
-            var tipo_movimentacao = "<%= tipo_movimentacao %>"
+        var tipo_movimentacao = "<%= tipo_movimentacao %>"
+        function addItem() {
 
-            const dadosItem =  {
+
+
+            const dadosItem = {
                 id_material: document.getElementById('material').value,
                 descricao_material: document.getElementById('descricao').value,
                 quantidade_material: document.getElementById('quantidade').value,
@@ -64,12 +72,36 @@
 
 
             sessionStorage.setItem(storage_key, JSON.stringify(itens));
+            sessionStorage.removeItem('material');
+            
             window.location.href = `/movimentacoes/${tipo_movimentacao}`;
 
         }
 
 
+        function redirect() {
+
+
+            console.log(tipo_movimentacao)
+            window.location.href = `/movimentacoes/${tipo_movimentacao}/itens_movimentacao/materiais`;
+
+
+        }
+
+
+        const dadosMaterial = sessionStorage.getItem('material');
+        if (dadosMaterial) {
+            // Converte os dados de material de string para objeto JavaScript
+            const material = JSON.parse(dadosMaterial);
+
+            // Preenche os inputs com os dados do material
+            document.getElementById('material').value = material.id_material;
+            document.getElementById('descricao').value = material.descricao_material;
+            document.getElementById('quantidade').value = material.quantidade_material;
+            document.getElementById('unidade').value = material.unidade_medida_material;
+        }
 
     </script>
 </body>
+
 </html>

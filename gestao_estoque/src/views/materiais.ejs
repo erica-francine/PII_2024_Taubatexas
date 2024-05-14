@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,20 +8,27 @@
     <!-- Adicionando Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        /* Estilo para mudar a cor de fundo das linhas da tabela ao passar o mouse */
-        tbody tr:hover {
-            background-color: #f5f5f5; /* Cor de fundo quando o mouse está sobre a linha */
+        /* Centralizar verticalmente o checkbox */
+        .checkbox-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
         }
-        /* Estilo para alterar a cor de fundo da linha quando selecionada */
-        .selecionado {
-            background-color: #5298e4; /* Cor de fundo quando a linha é selecionada */
+
+        /* Aumenta o tamanho do checkbox */
+        .checkbox-container input[type="checkbox"] {
+            transform: scale(1.5);
         }
-        /* Margem esquerda para o botão Pesquisar */
-        #pesquisarBtn {
-            margin-left: 10px;
+
+        /* Efeito hover na linha da tabela */
+        #materiaisTable tbody tr:hover {
+            background-color: #d6dce4;
+            /* Cinza claro */
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1 class="mt-5 mb-4">Materiais</h1>
@@ -37,9 +45,11 @@
                 <div class="col-md-5">
                     <label for="pesquisaInput">Pesquisar:</label>
                     <div class="input-group">
-                        <input type="text" id="pesquisaInput" class="form-control" placeholder="Digite o termo de pesquisa">
+                        <input type="text" id="pesquisaInput" class="form-control"
+                            placeholder="Digite o termo de pesquisa">
                         <div class="input-group-append">
-                            <button type="button" id="pesquisarBtn" class="btn btn-primary" onclick="filtrarPorCategoria()">Pesquisar</button>
+                            <button type="button" id="pesquisarBtn" class="btn btn-primary" onclick="filtrar()">
+                                Pesquisar</button>
                         </div>
                     </div>
                 </div>
@@ -50,6 +60,7 @@
         <table id="materiaisTable" class="table">
             <thead class="thead-dark">
                 <tr>
+                    <th>Selecionar</th>
                     <th>ID</th>
                     <th>Descrição</th>
                     <th>Unidade de Medida</th>
@@ -58,23 +69,32 @@
                 </tr>
             </thead>
             <tbody>
-                <% materiais.forEach(material => { %>
+                <% materiais.forEach(material=> { %>
                     <tr onclick="selecionarMaterial(this)">
-                        <td><%= material.id_material %></td>
-                        <td><%= material.descricao_material %></td>
-                        <td><%= material.unid_medida_material %></td>
-                        <td><%= material.quantidade_material %></td>
-                        <td><%= material.categoria.descricao_categoria %></td>
+                        <td class="checkbox-container"><input type="checkbox" class="form-check-input"></td>
+                        <td>
+                            <%= material.id_material %>
+                        </td>
+                        <td>
+                            <%= material.descricao_material %>
+                        </td>
+                        <td>
+                            <%= material.unid_medida_material %>
+                        </td>
+                        <td>
+                            <%= material.quantidade_material %>
+                        </td>
+                        <td>
+                            <%= material.categoria.descricao_categoria %>
+                        </td>
                     </tr>
-                <% }) %>
+                    <% }) %>
             </tbody>
         </table>
 
-        <button type="button" class="btn btn-primary">Selecionar</button>
-        
-    </div>
+        <button type="button" class="btn btn-primary" onclick="salvarMaterialSelecionado()">Selecionar</button>
 
-    
+    </div>
 
     <!-- Adicionando Bootstrap JS e jQuery (necessário para funcionalidades do Bootstrap) -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -90,38 +110,124 @@
             const categoriaSelect = document.getElementById('categoriaSelect');
             categorias.forEach(categoria => {
                 const option = document.createElement('option');
-                option.value = categoria.id_categoria;
+                option.value = categoria.descricao_categoria;
                 option.textContent = categoria.descricao_categoria;
                 categoriaSelect.appendChild(option);
             });
+
+
+
+
+
+
+
+
+
         };
 
-        // Função para selecionar material
+
         function selecionarMaterial(linha) {
-            const linhas = document.querySelectorAll('#materiaisTable tbody tr');
-            linhas.forEach(linha => {
+            const checkbox = linha.querySelector('input[type="checkbox"]');
+            const isChecked = checkbox.checked;
+
+            // Verifica se a linha já está selecionada
+            const isSelected = linha.classList.contains('selecionado');
+
+            if (isSelected) {
+                // Se a linha já estiver selecionada, desmarca o checkbox e remove a classe 'selecionado'
+                checkbox.checked = false;
                 linha.classList.remove('selecionado');
-            });
-            linha.classList.add('selecionado');
+            } else {
+                // Se a linha não estiver selecionada, remove a seleção de todas as outras linhas e desmarca os checkboxes
+                const linhas = document.querySelectorAll('#materiaisTable tbody tr');
+                linhas.forEach(outraLinha => {
+                    outraLinha.classList.remove('selecionado');
+                    outraLinha.querySelector('input[type="checkbox"]').checked = false;
+                });
+
+                // Marca a linha atual como selecionada e marca o checkbox
+                linha.classList.add('selecionado');
+                checkbox.checked = true;
+            }
         }
 
-        // Função para filtrar materiais por categoria
-        function filtrarPorCategoria() {
-            const categoriaSelect = document.getElementById('categoriaSelect');
-            const categoriaSelecionada = categoriaSelect.value;
+        //------------ARRUMAR FILTRO POR CATEGORIA---------------
+        function filtrar() {
+            const categoriaValue = document.getElementById('categoriaSelect').value
+            const categoriaSelecionada = document.getElementById('categoriaSelect').value.toLowerCase();
+            const termoPesquisa = document.getElementById('pesquisaInput').value.trim().toLowerCase();
 
-            // Esconder todas as linhas da tabela
             const linhas = document.querySelectorAll('#materiaisTable tbody tr');
             linhas.forEach(linha => {
-                linha.style.display = 'none';
-            });
+                const categoria = linha.querySelector('td:nth-child(6)').textContent.toLowerCase();
+                const descricao = linha.querySelector('td:nth-child(3)').textContent.toLowerCase();
 
-            // Mostrar apenas as linhas com a categoria selecionada
-            const linhasFiltradas = document.querySelectorAll(`#materiaisTable tbody tr td:nth-child(5):not(:empty):not(:first-child):not(:contains("${categoriaSelecionada}"))`);
-            linhasFiltradas.forEach(linha => {
-                linha.parentElement.style.display = '';
+                const categoriaOption = document.querySelector(`#categoriaSelect option[value="${categoriaValue}"]`).textContent.toLowerCase();
+
+                if ((categoria === categoriaOption || categoriaSelecionada === '') &&
+                    (descricao.includes(termoPesquisa) || termoPesquisa === '')) {
+                    linha.style.display = '';
+                } else {
+                    linha.style.display = 'none';
+                }
             });
         }
+
+
+        function salvarMaterialSelecionado() {
+
+            var tipo_movimentacao = "<%= tipo_movimentacao %>"
+
+
+            // Encontrar a linha selecionada
+            const linhaSelecionada = document.querySelector('#materiaisTable tbody tr.selecionado');
+
+            // Verificar se uma linha foi selecionada
+            if (linhaSelecionada) {
+                // Capturar os dados da linha selecionada
+                const idMaterial = linhaSelecionada.querySelector('td:nth-child(2)').textContent.trim().replace(/\n/g, '');
+                const descricaoMaterial = linhaSelecionada.querySelector('td:nth-child(3)').textContent.trim().replace(/\n/g, '');
+                const unidadeMedida = linhaSelecionada.querySelector('td:nth-child(4)').textContent.trim().replace(/\n/g, '');
+
+                // Criar um objeto com os dados
+                const materialSelecionado = {
+                    id_material: idMaterial,
+                    descricao_material: descricaoMaterial,
+                    unidade_medida_material: unidadeMedida
+                };
+
+                // Verificar se já existe um material salvo no sessionStorage
+                const materialExistente = JSON.parse(sessionStorage.getItem('material'));
+
+                if (materialExistente) {
+                    // Se já existe um material salvo, substituir os valores
+                    sessionStorage.setItem('material', JSON.stringify(materialSelecionado));
+
+                } else {
+                    // Se não existe um material salvo, salvar o novo material
+                    sessionStorage.setItem('material', JSON.stringify(materialSelecionado));
+
+                }
+
+            } else {
+                // Se nenhuma linha foi selecionada, exibir uma mensagem de erro
+                alert('Nenhum material selecionado. Por favor, selecione uma linha antes de clicar em "Selecionar".');
+            }
+
+            window.location.href = `/movimentacoes/${tipo_movimentacao}/itens_movimentacao`;
+
+
+
+
+            
+        }
+
+
+
+
+
+
     </script>
 </body>
+
 </html>

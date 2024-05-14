@@ -15,7 +15,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb breadcrumb-custom overflow-hidden text-center bg-body-tertiary border rounded-3">
                 <li class="breadcrumb-item">
-                    <a id="goBackButton" class="link-body-emphasis fw-semibold text-decoration-none" href="/">
+                    <a id="goBackButton" class="link-body-emphasis fw-semibold text-decoration-none" onclick="cancelar()">
                         <svg class="bi" width="16" height="16">
                             <use xlink:href="#house-door-fill"></use>
                         </svg>
@@ -57,7 +57,7 @@
                 <!-- Botões Enviar e Cancelar mais abaixo -->
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">Enviar</button>
-                    <button type="button" class="btn btn-secondary">Cancelar</button>
+                    <button type="button" class="btn btn-secondary" onclick="cancelar()">Cancelar</button>
                 </div>
             </form>
         </div>
@@ -114,7 +114,7 @@
                     <!-- Botões Enviar e Cancelar mais abaixo -->
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary">Enviar</button>
-                        <button type="button" class="btn btn-secondary">Cancelar</button>
+                        <button type="button" class="btn btn-secondary" onclick="cancelar()">Cancelar</button>
                     </div>
                 </form>
             </div>
@@ -170,15 +170,31 @@
 
                             </tr>`;
 
+                                const dadosMov = JSON.parse(sessionStorage.getItem('dados_mov'));
+
+                                if (dadosMov.data_movimentacao) {
+                                    document.getElementById('data').value = dadosMov.data_movimentacao;
+                                }
 
                                 if (tipo_movimentacao === 'entrada') {
+                                    if (dadosMov.fornecedor) {
+                                        document.getElementById('id_fornecedor').value = dadosMov.fornecedor;
+
+
+                                    }
+
 
                                     document.getElementById('tabela_entrada').innerHTML += tableRow;
 
                                 }
 
                                 if (tipo_movimentacao === 'saida') {
-
+                                    if (dadosMov.usuario) {
+                                        document.getElementById('id_usuario').value = dadosMov.usuario;
+                                    }
+                                    if (dadosMov.robo) {
+                                        document.getElementById('id_robo').value = dadosMov.robo;
+                                    }
                                     document.getElementById('tabela_saida').innerHTML += tableRow;
                                 }
 
@@ -222,6 +238,37 @@
 
 
                     function addItens(tipo_movimentacao) {
+                        // Obtém os valores dos campos de entrada
+                        const data_movimentacao = document.getElementById('data').value;
+
+
+
+                        // Constrói o objeto de dados dependendo do tipo de movimentação
+                        let dadosMov = {};
+                        if (tipo_movimentacao === 'entrada') {
+
+                            const fornecedor = document.getElementById('id_fornecedor').value;
+
+                            dadosMov = {
+                                data_movimentacao: data_movimentacao,
+                                fornecedor: fornecedor
+                            };
+                        } else if (tipo_movimentacao === 'saida') {
+
+                            const usuario = document.getElementById('id_usuario').value;
+                            const robo = document.getElementById('id_robo').value;
+
+                            dadosMov = {
+                                data_movimentacao: data_movimentacao,
+                                usuario: usuario,
+                                robo: robo
+                            };
+                        }
+
+                        // Armazena o objeto de dados no sessionStorage
+                        sessionStorage.setItem('dados_mov', JSON.stringify(dadosMov));
+
+
                         // Redireciona para a URL de adicionar itens à movimentação, com o tipo especificado
                         window.location.href = `/movimentacoes/${tipo_movimentacao}/itens_movimentacao`;
 
@@ -301,7 +348,8 @@
                             .then(data => {
                                 // Limpar o `sessionStorage` após o envio bem-sucedido
                                 sessionStorage.removeItem(storage_key);
-
+                                sessionStorage.removeItem('material');
+                                sessionStorage.removeItem('dados_mov');
                                 limparTabela(tipo_movimentacao);
 
 
@@ -405,7 +453,15 @@
                             });
                     }
 
+                    function cancelar(){
+                        sessionStorage.removeItem('material');
+                        sessionStorage.removeItem('dados_mov');
+                        sessionStorage.removeItem('dados_entrada');
+                        sessionStorage.removeItem('dados_saida');
+                        
+                        window.location.href = '/'
 
+                    }
 
 
                 </script>
