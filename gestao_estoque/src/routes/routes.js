@@ -16,6 +16,7 @@ routes.get('/',(req, res)=>{
 }, MateriaisController.listarMateriais)
 
 
+
 routes.get('/categorias', CategoriaController.listarCategorias)
 routes.post('/categorias', express.urlencoded({extended: true}), CategoriaController.criarCategoria)
 
@@ -48,7 +49,8 @@ routes.get('/robos', RoboController.listarRobos)
 routes.post('/projetos/:id_projeto/robos', express.urlencoded({extended: true}), RoboController.criarRobo)
 routes.delete('/projetos/:id_projeto/robos/:id_robo', express.urlencoded({extended: true}), RoboController.deletarRobo)
 
-routes.get('/materiais', MateriaisController.listarMateriais)
+
+routes.get('/materiais',  MateriaisController.listarMateriais)
 routes.post('/materiais', express.urlencoded({extended: true}), MateriaisController.cadastrarMaterial)
 routes.post('/materiais/:id_material', MateriaisController.ativarMaterial)
 routes.post('/materiais/:id_material', MateriaisController.inativarMaterial)
@@ -63,6 +65,7 @@ routes.get('/movimentacoes/:tipo_movimentacao', (req, res)=>{
 routes.get('/movimentacoes/:tipo_movimentacao/itens_movimentacao', (req, res)=>{
     res.render('itens_mov', {error:false, body:{}, tipo_movimentacao: req.params.tipo_movimentacao})
 })
+
 
 
 routes.post('/movimentacoes/:tipo_movimentacao', MovController.realizarMov, ItemController.addItemMov,MovController.attEstoque)

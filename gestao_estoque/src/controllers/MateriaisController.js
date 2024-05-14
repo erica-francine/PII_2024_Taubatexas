@@ -23,7 +23,7 @@ module.exports = {
             
             const material = await Material.create({ id_categoria, id_estoque, descricao_material, unid_medida_material, quantidade_material, status_material });
     
-            return res.send(material);
+            return res.json(material);
             
 
 
@@ -48,7 +48,8 @@ module.exports = {
             });
 
 
-            res.send(materiais);
+            // res.json(materiais);
+            res.render('materiais', {materiais: materiais})
 
         } catch (error) {
 

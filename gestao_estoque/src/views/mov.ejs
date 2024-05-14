@@ -7,14 +7,7 @@
     <title>Formulário de Entrada</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .input-group-append .dropdown-menu {
-            width: calc(100% - 1px);
-            /* Subtraímos 1px para compensar a borda do input */
-            left: 0;
-            right: auto;
-        }
-    </style>
+
 </head>
 
 <body>
@@ -93,19 +86,27 @@
                         <label for="data">Data:</label>
                         <input type="date" id="data" name="data_movimentacao" class="form-control" required>
                     </div>
+
                     <div class="form-group">
-                        <label for="usuario">Matrícula Usuário:</label>
-                        <input type="text" id="usuario" name="id_usuario" class="form-control"
-                            placeholder="Nome do Usuário">
-                        <div class="input-group-append">
-                            <span class="input-group-text"><a href="/usuarios"><i class="fas fa-search"></i></a></span>
-                        </div>
+                        <label for="usuario">Usuário:</label>
+                        <select id="id_usuario" name="id_usuario" class="form-control">
+                            <!-- Options aqui -->
+                        </select>
                     </div>
+
+
+
                     <div class="form-group">
                         <label for="robo">Robô Destino:</label>
-                        <input type="text" id="robo" name="id_robo" class="form-control"
-                            placeholder="Identificação do Robô">
+                        <select id="id_robo" name="id_robo" class="form-control">
+                            <!-- Options aqui -->
+                        </select>
                     </div>
+
+
+
+
+
                     <!-- Botão Add sozinho e com tom verde -->
                     <button type="button" class="btn btn-success mb-3"
                         onclick="addItens('<%= tipo_movimentacao %>')">Add</button>
@@ -148,7 +149,7 @@
                     window.onload = function () {
 
 
-                        carregadorForn()
+
                         const tipo_movimentacao = '<%= tipo_movimentacao %>';
 
                         const storage_key = tipo_movimentacao === 'entrada' ? 'dados_entrada' : 'dados_saida';
@@ -171,11 +172,13 @@
 
 
                                 if (tipo_movimentacao === 'entrada') {
+
                                     document.getElementById('tabela_entrada').innerHTML += tableRow;
 
                                 }
 
                                 if (tipo_movimentacao === 'saida') {
+
                                     document.getElementById('tabela_saida').innerHTML += tableRow;
                                 }
 
@@ -193,6 +196,13 @@
                                 event.preventDefault()
                                 enviarDados('entrada')
                             })
+
+                            carregadorForn()
+                            document.getElementById('id_fornecedor').addEventListener('change', function () {
+                                const opcao_selecionada = this.options[this.selectedIndex];
+                                const id_fornecedor = opcao_selecionada.dataset.id_fornecedor;
+
+                            })
                         }
 
                         if (formSaida) {
@@ -200,6 +210,13 @@
                                 event.preventDefault()
                                 enviarDados('saida')
                             })
+
+                            carregarUsuarios();
+                            carregarRobos();
+                            document.getElementById('formSaida').addEventListener('submit', function (event) {
+                                event.preventDefault();
+                                // Aqui você pode enviar os dados para o backend, incluindo os valores selecionados dos selects
+                            });
                         }
                     }
 
@@ -225,7 +242,7 @@
                             id_material: item.id_material,
                             quantidade_material: item.quantidade_material
                         }));
-                        
+
                         let id_fornecedor = null;
 
 
@@ -335,11 +352,58 @@
                             });
                     }
 
-                    document.getElementById('id_fornecedor').addEventListener('change', function () {
-                        const opcao_selecionada = this.options[this.selectedIndex];
-                        const id_fornecedor = opcao_selecionada.dataset.id_fornecedor;
-                        console.log(id_fornecedor);
-                    })
+
+
+
+                    function carregarUsuarios() {
+                        fetch('/usuarios')
+                            .then(response => response.json())
+                            .then(usuarios => {
+                                const selectUsuario = document.getElementById('id_usuario');
+                                selectUsuario.innerHTML = ''; // Limpar select antes de preencher
+
+                                const optionDefault = document.createElement('option');
+                                optionDefault.value = '';
+                                optionDefault.text = 'Selecionar Usuário';
+                                selectUsuario.appendChild(optionDefault);
+
+
+                                usuarios.forEach(usuario => {
+                                    const option = document.createElement('option');
+                                    option.value = usuario.id_usuario;
+                                    option.textContent = usuario.nome_usuario;
+                                    selectUsuario.appendChild(option);
+                                });
+                            })
+                            .catch(error => {
+                                console.error("Erro ao carregar usuários:", error);
+                            });
+                    }
+
+                    function carregarRobos() {
+                        fetch('/robos')
+                            .then(response => response.json())
+                            .then(robos => {
+                                const selectRobo = document.getElementById('id_robo');
+                                selectRobo.innerHTML = ''; // Limpar select antes de preencher
+
+                                const optionDefault = document.createElement('option');
+                                optionDefault.value = '';
+                                optionDefault.text = 'Selecionar Robô';
+                                selectRobo.appendChild(optionDefault);
+
+
+                                robos.forEach(robo => {
+                                    const option = document.createElement('option');
+                                    option.value = robo.id_robo;
+                                    option.textContent = robo.nome_robo;
+                                    selectRobo.appendChild(option);
+                                });
+                            })
+                            .catch(error => {
+                                console.error("Erro ao carregar robôs:", error);
+                            });
+                    }
 
 
 
