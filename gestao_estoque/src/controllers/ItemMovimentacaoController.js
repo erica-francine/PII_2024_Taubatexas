@@ -28,11 +28,16 @@ module.exports = {
                     throw new Error(`Material não encontrado para Código: ${item.id_material}`);
     
                 }
+
+                const valor_total = item.quantidade_material * item.valor_unit;
                 
                 const itemMovimentacao = await Item_Movimentacao.create({
                     id_movimentacao,
                     id_material: item.id_material,
-                    quantidade_material: item.quantidade_material
+                    quantidade_material: item.quantidade_material,
+                    valor_unit: item.valor_unit,
+                    valor_total
+
                 }, { transaction: t });
     
                 resultados.push(itemMovimentacao); // Armazena o resultado para resposta final
@@ -47,7 +52,6 @@ module.exports = {
             }
     
 
-            // await t.commit();
 
 
 

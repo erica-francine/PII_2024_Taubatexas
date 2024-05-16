@@ -21,6 +21,10 @@ class Movimentacoes extends Model {
                 allowNull: false
             },
 
+            nf: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },
 
             created_at: DataTypes.DATE,
             updated_at: DataTypes.DATE
@@ -30,12 +34,12 @@ class Movimentacoes extends Model {
         });
     }
 
-    static associate(models){
-        this.belongsTo(models.Fornecedores, {foreignKey: 'id_fornecedor', as: 'fornecedor'})
-        this.belongsTo(models.Usuarios, {foreignKey: 'id_usuario', as: 'usuario'})
-        this.belongsTo(models.Robos, {foreignKey: 'id_robo', as: 'robo'})
-        this.hasMany(models.Itens_Movimentacoes, {foreignKey: 'id_movimentacao', as: 'itens_movimentacoes'})
-  
+    static associate(models) {
+        this.belongsTo(models.Fornecedores, { foreignKey: 'id_fornecedor', as: 'fornecedor' })
+        this.belongsTo(models.Usuarios, { foreignKey: 'id_usuario', as: 'usuario' })
+        this.belongsTo(models.Robos, { foreignKey: 'id_robo', as: 'robo' })
+        this.hasMany(models.Itens_Movimentacoes, { foreignKey: 'id_movimentacao', as: 'itens_movimentacoes' })
+
     }
 }
 

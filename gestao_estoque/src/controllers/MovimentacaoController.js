@@ -14,7 +14,7 @@ module.exports = {
             const { tipo_movimentacao } = req.params;
 
 
-            const { id_fornecedor, id_usuario, id_robo, data_movimentacao, itens_movimentacao } = req.body;
+            const { id_fornecedor, id_usuario, id_robo, data_movimentacao, itens_movimentacao, nf } = req.body;
 
 
             //Verificando se estou passando itens para a movimentação
@@ -33,7 +33,7 @@ module.exports = {
                 }
 
 
-                movimentacao = await Mov.create({ id_fornecedor, data_movimentacao, tipo_movimentacao }, { transaction: t });
+                movimentacao = await Mov.create({ id_fornecedor, data_movimentacao, tipo_movimentacao, nf }, { transaction: t });
                 req.id_movimentacao = movimentacao.id_movimentacao;
 
 
@@ -50,7 +50,7 @@ module.exports = {
                     throw new Error(`Robo não encontrado.`);
                 }
 
-                movimentacao = await Mov.create({ id_usuario, id_robo, data_movimentacao, tipo_movimentacao }, { transaction: t });
+                movimentacao = await Mov.create({ id_usuario, id_robo, data_movimentacao, tipo_movimentacao, nf }, { transaction: t });
                 req.id_movimentacao = movimentacao.id_movimentacao;
 
             } else {

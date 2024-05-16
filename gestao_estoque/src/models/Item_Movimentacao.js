@@ -15,12 +15,25 @@ class Itens_Movimentacoes extends Model {
                 allowNull: false
             },
 
+            valor_unit: {
+                type: DataTypes.FLOAT,
+                allowNull: false,
+                defaultValue: 0
+            },
+
+            valor_total:{
+                type: DataTypes.FLOAT,
+                allowNull: false,
+                defaultValue: 0
+            },
+
             created_at: DataTypes.DATE,
             updated_at: DataTypes.DATE
         }, {
             sequelize,
             tableName: 'itens_movimentacao'
         });
+
     }
 
     static associate(models) {
