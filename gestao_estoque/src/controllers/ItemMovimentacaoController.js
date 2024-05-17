@@ -29,14 +29,12 @@ module.exports = {
     
                 }
 
-                const valor_total = item.quantidade_material * item.valor_unit;
-                
                 const itemMovimentacao = await Item_Movimentacao.create({
                     id_movimentacao,
                     id_material: item.id_material,
                     quantidade_material: item.quantidade_material,
                     valor_unit: item.valor_unit,
-                    valor_total
+                    valor_total: item.valor_total
 
                 }, { transaction: t });
     

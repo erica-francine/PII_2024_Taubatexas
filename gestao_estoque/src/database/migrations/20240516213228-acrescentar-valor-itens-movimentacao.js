@@ -6,14 +6,12 @@ module.exports = {
     // Adiciona a coluna `valor_unitario`
     await queryInterface.addColumn('itens_movimentacao', 'valor_unit', {
       type: Sequelize.FLOAT,
-      allowNull: false,
       defaultValue: 0
     });
 
     // Adiciona a coluna `valor_total`
     await queryInterface.addColumn('itens_movimentacao', 'valor_total', {
       type: Sequelize.FLOAT,
-      allowNull: false,
       defaultValue: 0
     });
   },

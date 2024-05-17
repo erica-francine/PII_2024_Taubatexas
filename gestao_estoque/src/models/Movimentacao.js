@@ -23,7 +23,6 @@ class Movimentacoes extends Model {
 
             nf: {
                 type: DataTypes.STRING,
-                allowNull: false,
             },
 
             created_at: DataTypes.DATE,

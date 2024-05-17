@@ -5,7 +5,6 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.addColumn('movimentacoes', 'nf', {
       type: Sequelize.STRING,
-      allowNull: false, 
     });
   },
 

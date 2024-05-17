@@ -17,13 +17,11 @@ class Itens_Movimentacoes extends Model {
 
             valor_unit: {
                 type: DataTypes.FLOAT,
-                allowNull: false,
                 defaultValue: 0
             },
 
             valor_total:{
                 type: DataTypes.FLOAT,
-                allowNull: false,
                 defaultValue: 0
             },
 
