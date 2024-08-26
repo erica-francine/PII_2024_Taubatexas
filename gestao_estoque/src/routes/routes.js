@@ -70,7 +70,13 @@ routes.get('/movimentacoes/:tipo_movimentacao/itens_movimentacao', (req, res)=>{
 })
 
 
-routes.get('/movimentacoes/:tipo_movimentacao/itens_movimentacao/materiais',  MateriaisController.listarMateriais)
+routes.get('/movimentacoes/:tipo_movimentacao/itens_movimentacao/materiais', (req, res, next) => {
+    MateriaisController.listarMateriais(req, {
+        json: (materiais) => {
+            res.render('materiais', { materiais:materiais, tipo_movimentacao: req.params.tipo_movimentacao });
+        }
+    });
+})
 
 
 routes.post('/movimentacoes/:tipo_movimentacao', MovController.realizarMov, ItemController.addItemMov,MovController.attEstoque)
