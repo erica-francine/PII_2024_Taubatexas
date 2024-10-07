@@ -50,9 +50,15 @@ routes.post('/projetos/:id_projeto/robos', express.urlencoded({extended: true}),
 routes.delete('/projetos/:id_projeto/robos/:id_robo', express.urlencoded({extended: true}), RoboController.deletarRobo)
 
 
-routes.get('/materiais',  MateriaisController.listarMateriais)
+// routes.get('/materiais',  (req, res, next) => {
+//     MateriaisController.listarMateriais(req, {
+//         json: (materiais) => {
+//             res.render('materiais', { materiais:materiais, tipo_movimentacao: req.params.tipo_movimentacao, params: req.originalUrl});
+//         }
+//     })
+// })
 
-
+routes.get('/materiais', MateriaisController.listarMateriais)
 
 routes.post('/materiais', express.urlencoded({extended: true}), MateriaisController.cadastrarMaterial)
 routes.post('/materiais/:id_material', MateriaisController.ativarMaterial)
@@ -73,7 +79,7 @@ routes.get('/movimentacoes/:tipo_movimentacao/itens_movimentacao', (req, res)=>{
 routes.get('/movimentacoes/:tipo_movimentacao/itens_movimentacao/materiais', (req, res, next) => {
     MateriaisController.listarMateriais(req, {
         json: (materiais) => {
-            res.render('materiais', { materiais:materiais, tipo_movimentacao: req.params.tipo_movimentacao });
+            res.render('materiais', { materiais:materiais, tipo_movimentacao: req.params.tipo_movimentacao, params: req.params});
         }
     });
 })

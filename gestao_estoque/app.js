@@ -17,13 +17,14 @@
 //     console.log("Database connected.")
 // })
 
+require('dotenv').config({path:'./src/config/.env'})
+
 const express = require('express');
 const app = express()
-const PORT = 3000
-const routes = require('./src/routes/routes')
 const db = require('./src/database/index')
 const path = require('path')
-
+const routes = require('./src/routes/routes')
+const userRoutes = require('./src/routes/userRoutes')
 
 db.authenticate()
   .then(() => {
@@ -44,8 +45,8 @@ app.set('views', path.join(__dirname, 'src', 'views'))
 
   
 app.use(routes)
+app.use('/user',userRoutes)
 
-
-app.listen(PORT, ()=>{
+app.listen(process.env.PORT, ()=>{
     console.log('server running')
 })

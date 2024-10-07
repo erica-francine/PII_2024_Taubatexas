@@ -57,10 +57,13 @@
         </form>
 
         <!-- Tabela de Materiais -->
+
+        <!--  <% //if(url_params==="/materiais") {  %>
+
         <table id="materiaisTable" class="table">
             <thead class="thead-dark">
                 <tr>
-                    <th>Selecionar</th>
+
                     <th>ID</th>
                     <th>Descrição</th>
                     <th>Unidade de Medida</th>
@@ -69,30 +72,82 @@
                 </tr>
             </thead>
             <tbody>
-                <% materiais.forEach(material=> { %>
-                    <tr onclick="selecionarMaterial(this)">
-                        <td class="checkbox-container"><input type="checkbox" class="form-check-input"></td>
+                <% //materiais.forEach(material=> { %>
+                    <tr>
+
                         <td>
-                            <%= material.id_material %>
+                            <%= //material.id_material %>
                         </td>
                         <td>
-                            <%= material.descricao_material %>
+                            <%= //material.descricao_material %>
                         </td>
                         <td>
-                            <%= material.unid_medida_material %>
+                            <%= //material.unid_medida_material %>
                         </td>
                         <td>
-                            <%= material.quantidade_material %>
+                            <%= //material.quantidade_material %>
                         </td>
                         <td>
-                            <%= material.categoria.descricao_categoria %>
+                            <%= //material.categoria.descricao_categoria %>
                         </td>
                     </tr>
-                    <% }) %>
+                    <% //}) %>
             </tbody>
+
+            
         </table>
 
-        <button type="button" class="btn btn-primary" onclick="salvarMaterialSelecionado()">Selecionar</button>
+        
+
+        <% //} %> -->
+
+        <% if(tipo_movimentacao==='entrada' || tipo_movimentacao==='saida') {%>
+
+            <table id="materiaisTable" class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Selecionar</th>
+                        <th>ID</th>
+                        <th>Descrição</th>
+                        <th>Unidade de Medida</th>
+                        <th>Quantidade</th>
+                        <th>Categoria</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% materiais.forEach(material=> { %>
+                        <tr onclick="selecionarMaterial(this)">
+                            
+                            <td class="checkbox-container"><input type="checkbox" class="form-check-input"></td>
+                            <td>
+                                <%= material.id_material %>
+                            </td>
+                            <td>
+                                <%= material.descricao_material %>
+                            </td>
+                            <td>
+                                <%= material.unid_medida_material %>
+                            </td>
+                            <td>
+                                <%= material.quantidade_material %>
+                            </td>
+                            <td>
+                                <%= material.categoria.descricao_categoria %>
+                            </td>
+                        </tr>
+                        <% }) %>
+                </tbody>
+    
+                
+            </table>
+    
+            <button type="button" class="btn btn-primary" onclick="salvarMaterialSelecionado()">Selecionar</button>
+    
+
+
+
+        <% } %>
+
 
     </div>
 
@@ -102,6 +157,10 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
+
+        //var url_params = "<%=//params%>" 
+        var tipo_movimentacao = "<%= tipo_movimentacao %>"
+        
         // Carregar categorias ao carregar a página
         window.onload = async function () {
             const response = await fetch('/categorias');
@@ -114,11 +173,6 @@
                 option.textContent = categoria.descricao_categoria;
                 categoriaSelect.appendChild(option);
             });
-
-
-
-
-
 
 
 
@@ -176,7 +230,7 @@
 
         function salvarMaterialSelecionado() {
 
-            var tipo_movimentacao = "<%= tipo_movimentacao %>"
+
 
 
             // Encontrar a linha selecionada

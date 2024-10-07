@@ -95,8 +95,14 @@ module.exports = {
         }
     },
 
-
-
+   async register(req,res){
+        console.log('registered')
+        res.send('Registered')
+   },
+   async login(req,res){
+        console.log('logged in')
+        res.send('Logged in')
+   }
 
 }
 
