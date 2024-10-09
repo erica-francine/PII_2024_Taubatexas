@@ -1,21 +1,7 @@
 const Usuario = require('../models/Usuario');
+const bcrypt = require('bcryptjs');
 
 module.exports = {
-
-    async criarUsuario(req, res){
-        const { nome_usuario, funcao_usuario } = req.body;
-
-        try {
-            const usuario = await Usuario.create({ nome_usuario, funcao_usuario });
-            return res.send(usuario);
-        } catch (error) {
-  
-            console.error("Erro ao criar usuário:", error);
-
-            return res.status(500).send({ error: "Erro ao criar o usuário. Por favor, tente novamente." });
-        }
-    },
-
 
     async listarUsuarios(req, res){
         try {
@@ -95,13 +81,46 @@ module.exports = {
         }
     },
 
-   async register(req,res){
-        console.log('registered')
-        res.send('Registered')
-   },
-   async login(req,res){
-        console.log('logged in')
-        res.send('Logged in')
+    async register(req,res){
+        
+        const usuarioSelecionado = await Usuario.findOne({
+            where: { email_usuario: req.body.email_usuario } 
+        });
+
+            if(usuarioSelecionado) return res.status(400).send('Usuário já cadastrado com esse email')
+
+            try {
+                const usuario = await Usuario.create({ 
+                    nome_usuario: req.body.nome_usuario,
+                    email_usuario: req.body.email_usuario,
+                    senha_usuario: bcrypt.hashSync(req.body.senha_usuario),
+                    funcao_usuario: req.body.funcao_usuario
+                });
+                return res.send(usuario);
+            } catch (error) {
+    
+                console.error("Erro ao registrar usuário:", error);
+
+                return res.status(400).send({ error: "Erro ao registrar o usuário. Por favor, tente novamente." });
+            }
+    },
+
+
+
+    async login(req,res){
+
+        const usuarioSelecionado = await Usuario.findOne({
+            where: { email_usuario: req.body.email_usuario } 
+        });
+
+        if(!usuarioSelecionado) return res.status(400).send('Email ou senha incorretos')
+
+        const senhaUsuarioMatch = bcrypt.compareSync(req.body.senha_usuario, usuarioSelecionado.senha_usuario)
+
+        if(!senhaUsuarioMatch) return res.status(400).send('Email ou senha incorretos')
+        
+        
+        res.send('Usuario logado')
    }
 
 }

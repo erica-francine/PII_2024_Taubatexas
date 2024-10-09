@@ -17,6 +17,20 @@ class Usuarios extends Model {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
+            email_usuario:{
+                type:DataTypes.STRING,
+                allowNull: false,
+                unique: true
+                // validate: {
+                //     isEmail: true 
+                //   }
+            },
+            senha_usuario:{
+                type:DataTypes.STRING,
+                allowNull: false,
+            
+                
+            },
             status_usuario: {
                 type: DataTypes.BOOLEAN,
                 defaultValue: true,

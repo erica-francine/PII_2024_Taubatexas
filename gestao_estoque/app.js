@@ -45,7 +45,7 @@ app.set('views', path.join(__dirname, 'src', 'views'))
 
   
 app.use(routes)
-app.use('/user',userRoutes)
+app.use('/user', express.json(),userRoutes)
 
 app.listen(process.env.PORT, ()=>{
     console.log('server running')

@@ -24,11 +24,7 @@ routes.post('/categorias', express.urlencoded({extended: true}), CategoriaContro
 routes.get('/estoques', EstoqueController.listarEstoques)
 routes.post('/estoques',express.urlencoded({extended: true}), EstoqueController.criarEstoque)
 
-routes.get('/usuarios', UsuariosController.listarUsuarios)
-routes.post('/usuarios', express.urlencoded({extended: true}), UsuariosController.criarUsuario)
-routes.post('/usuarios/inativar', express.urlencoded({extended: true}), UsuariosController.inativarUsuario)
-routes.post('/usuarios/ativar', express.urlencoded({extended: true}), UsuariosController.ativarUsuario)
-routes.delete('/usuarios', express.urlencoded({extended: true}), UsuariosController.deletarUsuario)
+
 
 routes.get('/fornecedores', FornecedorController.listarFornecedores)
 routes.post('/fornecedores', express.urlencoded({extended: true}), FornecedorController.criarFornecedor)
