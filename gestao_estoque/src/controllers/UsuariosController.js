@@ -1,11 +1,15 @@
 const Usuario = require('../models/Usuario');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const validate = require('./Validate')
 
 module.exports = {
 
     async listarUsuarios(req, res){
         try {
-            const usuarios = await Usuario.findAll();
+            const usuarios = await Usuario.findAll({
+                attributes: { exclude: ['senha_usuario'] } // Excluir a coluna senha
+            });
             res.send(usuarios);
         } catch (error) {
 
@@ -83,6 +87,9 @@ module.exports = {
 
     async register(req,res){
         
+        const {error} = validate.registerValidate(req.body)
+        if(error){return res.status(400).send(error.message)}
+
         const usuarioSelecionado = await Usuario.findOne({
             where: { email_usuario: req.body.email_usuario } 
         });
@@ -109,6 +116,10 @@ module.exports = {
 
     async login(req,res){
 
+        const {error} = validate.loginValidate(req.body)
+        if(error){return res.status(400).send(error.message)}
+
+
         const usuarioSelecionado = await Usuario.findOne({
             where: { email_usuario: req.body.email_usuario } 
         });
@@ -120,6 +131,9 @@ module.exports = {
         if(!senhaUsuarioMatch) return res.status(400).send('Email ou senha incorretos')
         
         
+        const token = jwt.sign({id_usuario:usuarioSelecionado.id_usuario,funcao_usuario: usuarioSelecionado.funcao_usuario}, process.env.TOKEN_SECRET, { expiresIn: '1h' })
+
+        res.header('authorization-token', token)
         res.send('Usuario logado')
    }
 

@@ -12,24 +12,30 @@ class Usuarios extends Model {
             funcao_usuario: {
                 type: DataTypes.STRING,
                 allowNull: false,
+                defaultValue: 'operador'
             },
             nome_usuario: {
                 type: DataTypes.STRING,
                 allowNull: false,
+                validate:{
+                    len: [3]
+                }
             },
             email_usuario:{
                 type:DataTypes.STRING,
                 allowNull: false,
-                unique: true
-                // validate: {
-                //     isEmail: true 
-                //   }
+                unique: true,
+                validate: {
+                    isEmail: true
+                }
             },
             senha_usuario:{
                 type:DataTypes.STRING,
                 allowNull: false,
-            
-                
+                validate:{
+                    len: [8]
+                }
+
             },
             status_usuario: {
                 type: DataTypes.BOOLEAN,
