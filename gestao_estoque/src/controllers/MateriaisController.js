@@ -48,9 +48,9 @@ module.exports = {
             });
 
 
-            // res.json(materiais);
-            res.render('materiais', {materiais: materiais, tipo_movimentacao: req.params.tipo_movimentacao})
+            res.json(materiais);
 
+            
         } catch (error) {
 
             console.error("Erro ao listar materiais:", error);
