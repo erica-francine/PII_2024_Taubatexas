@@ -2,7 +2,7 @@
   "name": "gestao_estoque",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "dev": "nodemon src/server.js",
     "start": "node app.js",
@@ -22,9 +22,9 @@
     "sequelize": "^6.37.3"
   },
   "devDependencies": {
-    "@types/bcryptjs": "^2.4.6",
-    "@types/jsonwebtoken": "^9.0.7",
-    "nodemon": "^3.1.0",
-    "sequelize-cli": "^6.6.2"
+  "nodemon": "^3.1.4",
+  "@types/bcryptjs": "^2.4.6",
+  "@types/jsonwebtoken": "^9.0.7",
+  "sequelize-cli": "^6.6.2"
   }
 }
