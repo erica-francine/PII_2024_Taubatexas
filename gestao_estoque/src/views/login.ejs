@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- <link rel="stylesheet" href="./styles/login.css">  -->
+    <!-- <script src="./login.js"></script>  -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginForm = document.getElementById('loginForm');
+            const emailInput = document.getElementById('email');
+            const senhaInput = document.getElementById('senha');
+            const errorDiv = document.getElementById('error');
+            const registerButton = document.getElementById('registerBtn');
+
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const email = emailInput.value; // Captura o valor do input de email
+                const senha = senhaInput.value; // Captura o valor do input de senha
+
+                try {
+                    const response = await fetch('/user/login', {
+                        method: 'POST', // Define o método HTTP como POST
+                        headers: {
+                            'Content-Type': 'application/json', // Define o tipo de conteúdo como JSON
+                        },
+                        body: JSON.stringify({
+                            email_usuario: email, // Prepara os dados para envio
+                            senha_usuario: senha,
+                        }),
+                    });
+
+                    if (response.ok) {
+                        errorDiv.style.display = 'none'; // Oculta a mensagem de erro
+                        console.log('Login bem-sucedido');
+                        
+                        // Redireciona para a página principal
+                        window.location.href = '/home'; // Redireciona diretamente
+                    } else {
+                        const errorMessage = await response.text(); // Obtém a mensagem de erro
+                        showError(errorMessage || 'Erro ao fazer login'); // Exibe a mensagem de erro
+                    }
+                } catch (err) {
+                    showError('Erro ao conectar com o servidor'); // Exibe erro de conexão
+                }
+            });
+
+            registerButton.addEventListener('click', () => {
+                window.location.href = '/register'; // Redireciona para a página de registro
+            });
+
+            function showError(message) {
+                errorDiv.textContent = message; // Define a mensagem de erro
+                errorDiv.style.display = 'block'; // Mostra a mensagem de erro
+            }
+        });
+
+
+    </script>
+
+    <style>
+        body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Arial', sans-serif;
+        background-color: #f0f2f5;
+        }
+
+        .form-container {
+        display: flex;
+        justify-content: center;
+        align-items:center;
+        height: 100vh;
+        }
+
+        .form-box {
+        background-color: white;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 400px;
+        text-align: start;
+        }
+
+        h2 {
+        margin-bottom: 20px;
+        color: #333;
+        text-align: center;
+        }
+
+        .form-group {
+        margin-bottom: 20px;
+        }
+
+        label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        }
+
+        .form-control {
+        width: 95%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+        }
+
+        .form-control:focus {
+        border-color: #5e9fb1;
+        outline: none;
+        }
+
+        .btn {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        cursor: pointer;
+        }
+
+        .btn-primary {
+        background-color: #5e9fb1;
+        color: white;
+        border: none;
+        }
+
+        .btn-primary:hover {
+        background-color: #4a8699;
+        }
+
+        .btn-secondary {
+        margin-top: 10px;
+        background-color: #ddd;
+        color: black;
+        border: none;
+        }
+
+        .btn-secondary:hover {
+        background-color: #ccc;
+        }
+
+        .alert {
+        background-color: #f8d7da;
+        color: #721c24;
+        padding: 10px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <div class="form-box">
+            <h2>Login</h2>
+            <div id="error" class="alert alert-danger" style="display: none;"></div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Entrar</button>
+                <button type="button" class="btn btn-secondary" id="registerBtn">Registrar</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

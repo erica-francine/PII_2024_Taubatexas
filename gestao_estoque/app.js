@@ -26,6 +26,9 @@ const path = require('path')
 const router = require('./src/routes/router')
 const userRouter = require('./src/routes/userRouter')
 const adminRouter = require('./src/routes/adminRouter')
+const cookieParser = require('cookie-parser');
+
+
 
 db.authenticate()
   .then(() => {
@@ -40,11 +43,12 @@ app.use(express.static(path.join(__dirname, 'src', 'public')));
 
 app.use(express.json());
 
+app.use(cookieParser());
 
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'src', 'views'))
 
-  
+app.use(express.static(path.join(__dirname, 'client/build')))  
 app.use('/user', express.json(),userRouter)
 app.use('/admin', adminRouter) 
 app.use(router)

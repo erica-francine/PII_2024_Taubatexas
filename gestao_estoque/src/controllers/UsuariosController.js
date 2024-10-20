@@ -2,6 +2,7 @@ const Usuario = require('../models/Usuario');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const validate = require('./Validate')
+const cookieParser = require('cookie-parser')
 
 module.exports = {
 
@@ -133,10 +134,17 @@ module.exports = {
         
         const token = jwt.sign({id_usuario:usuarioSelecionado.id_usuario,funcao_usuario: usuarioSelecionado.funcao_usuario}, process.env.TOKEN_SECRET, { expiresIn: '1h' })
 
-        res.header('authorization-token', token)
-        res.send('Usuario logado')
-   }
+        
+        res.cookie('authorization-token', token, {
+            httpOnly:true,
+            // secure:true,
+            maxAge: 3600000,
+        });
 
+        res.send('Usuario logado');
+   },
+
+   
 }
 
 

@@ -9,6 +9,11 @@ router.post('/register', userController.register)
 
 router.post('/login', userController.login)
 
+router.post('/logout', (req,res)=>{
+    res.clearCookie('authorization-token')
+    res.send('Logout realizado com sucesso')
+})
+
 router.use(authController)
 
 router.get('/users', authProfile(['admin']), userController.listarUsuarios)

@@ -12,12 +12,23 @@ const MovController = require('../controllers/MovimentacaoController')
 const ItemController = require('../controllers/ItemMovimentacaoController')
 const authController = require('../controllers/AuthController')
 const authProfile = require('../controllers/AuthProfileController')
+const path = require('path');
 
 router.get('/',(req, res)=>{
+    res.render('login', {error:false, body:{}})
+})
+
+router.get('/register', (req, res)=>{
+    res.render('register', {error:false, body:{}})
+})
+
+router.use(authController)
+
+router.get('/home', authProfile(['admin', 'gestor', 'operador']),(req, res)=>{
     res.render('index', {error:false, body:{}})
 }, MateriaisController.listarMateriais)
 
-router.use(authController)
+
 
 router.get('/categorias', authProfile(['admin', 'gestor', 'operador']), CategoriaController.listarCategorias)
 router.post('/categorias',authProfile(['admin', 'gestor']), express.urlencoded({extended: true}), CategoriaController.criarCategoria)
