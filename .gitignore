@@ -1,1 +1,5 @@
 .idea
+
+gestao_estoque/src/config/.env
+
+gestao_estoque/node_modules
