@@ -86,34 +86,41 @@ module.exports = {
         }
     },
 
-    async register(req,res){
-        
-        const {error} = validate.registerValidate(req.body)
-        if(error){return res.status(400).send(error.message)}
-
-        const usuarioSelecionado = await Usuario.findOne({
-            where: { email_usuario: req.body.email_usuario } 
-        });
-
-            if(usuarioSelecionado) return res.status(400).send('Usuário já cadastrado com esse email')
-
+    async register(req, res) {
+        try {
+            const { error } = validate.registerValidate(req.body);
+            if (error) {
+                return res.status(400).send(error.message);
+            }
+            let usuarioSelecionado;
             try {
-                const usuario = await Usuario.create({ 
+                usuarioSelecionado = await Usuario.findOne({
+                    where: { email_usuario: req.body.email_usuario }
+                });
+            } catch (findError) {
+                console.error("Erro ao buscar usuário:", findError);
+                return res.status(500).send({ error: "Erro ao verificar o usuário." });
+            }
+            if (usuarioSelecionado) {
+                return res.status(400).send("Usuário já cadastrado com esse email");
+            }
+            try {
+                const usuario = await Usuario.create({
                     nome_usuario: req.body.nome_usuario,
                     email_usuario: req.body.email_usuario,
                     senha_usuario: bcrypt.hashSync(req.body.senha_usuario),
                     funcao_usuario: req.body.funcao_usuario
                 });
                 return res.send(usuario);
-            } catch (error) {
-    
-                console.error("Erro ao registrar usuário:", error);
-
+            } catch (createError) {
+                console.error("Erro ao registrar usuário:", createError);
                 return res.status(400).send({ error: "Erro ao registrar o usuário. Por favor, tente novamente." });
             }
+        } catch (error) {
+            console.error("Erro geral no registro:", error);
+            return res.status(500).send({ error: "Erro no registro do usuário." });
+        }
     },
-
-
 
     async login(req,res){
 

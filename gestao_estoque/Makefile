@@ -1,29 +1,33 @@
-# Makefile
+# Makefile usando `docker compose`
 
-# Variables
-IMAGE_NAME = gestao_estoque
-CONTAINER_NAME = gestao_estoque_container
-PORT = 3000
+COMPOSE_FILE = docker-compose.yml
 
-# Build the Docker image
 build:
-	docker build -t $(IMAGE_NAME) .
+	docker compose -f $(COMPOSE_FILE) build
 
-# Run the Docker container
-run: build
-	docker run -d -p $(PORT):$(PORT) --name $(CONTAINER_NAME) $(IMAGE_NAME)
+up: build
+	docker compose -f $(COMPOSE_FILE) up -d
 
-# Stop the Docker container
 stop:
-	docker stop $(CONTAINER_NAME)
+	docker compose -f $(COMPOSE_FILE) stop
 
-# Remove the Docker container
-rm: stop
-	docker rm $(CONTAINER_NAME)
+down: stop
+	docker compose -f $(COMPOSE_FILE) down
 
-# Clean up Docker images
-clean: rm
-	docker rmi $(IMAGE_NAME)
+logs:
+	docker compose -f $(COMPOSE_FILE) logs -f
 
-# Default target
-default: run
+build-compose:
+	docker-compose -f $(COMPOSE_FILE) build
+
+up-compose: build-compose
+	docker-compose -f $(COMPOSE_FILE) up -d
+
+stop-compose:
+	docker-compose -f $(COMPOSE_FILE) stop
+
+down-compose: stop
+	docker-compose -f $(COMPOSE_FILE) down
+
+logs-compose:
+	docker-compose -f $(COMPOSE_FILE) logs -f
