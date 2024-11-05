@@ -11,11 +11,8 @@ const cookieParser = require('cookie-parser');
 const mysql = require("mysql")
 
 const db = mysql.createConnection({
-    // host:"database-1.cv86mqw8cdtk.us-east-1.rds.amazonaws.com",
     host:"localhost",
     port:"3306",
-    // user:"admin",
-    // password:"adminmysql",
     user:"user",
     password:"mysql",
     database:"gestao_estoque"
