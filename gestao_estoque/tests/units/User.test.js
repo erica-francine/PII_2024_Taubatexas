@@ -1,4 +1,3 @@
-const request = require('supertest');
 const bcrypt = require('bcryptjs'); 
 const Usuario = require('../../src/models/Usuario');
 const userController = require('../../src/controllers/UsuariosController');
