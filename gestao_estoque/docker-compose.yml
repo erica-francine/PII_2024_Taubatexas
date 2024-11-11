@@ -15,7 +15,7 @@ services:
     volumes:
       - ./src:/src
     ports:
-      - "3000:3000"
+      - "5000:5000"
 
   db:
     image: mysql:8
@@ -23,7 +23,7 @@ services:
       MYSQL_ROOT_PASSWORD: mysql
       MYSQL_DATABASE: gestao_estoque
     ports:
-      - "3306:3306"
+      - "3302:3306"
     volumes:
       - mysql_data:/var/lib/mysql
 
