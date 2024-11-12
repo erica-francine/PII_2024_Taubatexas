@@ -9,7 +9,6 @@ class Materiais extends Model {
                 autoIncrement:true,
                 allowNull: false,
               },
-       
               descricao_material: {
                 type: DataTypes.STRING,
                 allowNull: false

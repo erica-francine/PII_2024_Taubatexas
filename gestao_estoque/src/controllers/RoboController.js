@@ -13,11 +13,11 @@ module.exports = {
             const projeto = await Projeto.findByPk(id_projeto)
 
             if(!projeto){
-                res.status(400).send({error: 'Projeto não encontrado.'})
+               return res.status(400).send({error: 'Projeto não encontrado.'})
             }
             
     
-            const robo = await Robo.create( {id_robo, id_projeto, nome_robo, tipo_robo });
+            const robo = await Robo.create( {id_projeto, nome_robo, tipo_robo });
     
             return res.send(robo);
             

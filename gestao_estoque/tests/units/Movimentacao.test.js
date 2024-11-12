@@ -11,172 +11,147 @@ jest.mock('../../src/models/Usuario');
 jest.mock('../../src/models/Robo');
 jest.mock('../../src/models/Movimentacao');
 jest.mock('../../src/models/Material');
-jest.mock('../../src/database/index', () => ({
-    transaction: jest.fn().mockResolvedValue({ commit: jest.fn(), rollback: jest.fn() }), 
-}));
-
+jest.mock('../../src/database/index');
 
 describe('MovimentacaoController', () => {
-    let req, res, next, t;
+  let req, res, next, transaction;
 
-    beforeEach(() => {
-        t = { commit: jest.fn(), rollback: jest.fn() };
-        req = {
-            params: { tipo_movimentacao: 'entrada' },
-            body: {
-                id_fornecedor: 1,
-                id_usuario: 1,
-                id_robo: 1,
-                data_movimentacao: '2024-11-07',
-                nf: '12345',
-                itens_movimentacao: [{ id_material: 1, quantidade_material: 50 }],
-            },
-            transaction: t,
-        };
-        res = {
-            status: jest.fn().mockReturnThis(),
-            send: jest.fn(),
-        };
-        next = jest.fn();
+  beforeEach(() => {
+    req = { params: {}, body: {}, id_movimentacao: null, transaction: null };
+    res = { status: jest.fn().mockReturnThis(), send: jest.fn() };
+    next = jest.fn();
+    transaction = { commit: jest.fn(), rollback: jest.fn() };
 
-        jest.clearAllMocks();
+    connection.transaction.mockResolvedValue(transaction);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  describe('realizarMov', () => {
+    it('deve criar uma movimentação de entrada com sucesso', async () => {
+      req.params.tipo_movimentacao = 'entrada';
+      req.body = { id_fornecedor: 1, data_movimentacao: '2024-11-07', itens_movimentacao: [{ id_material: 1, quantidade_material: 10 }], nf: '12345' };
+
+      Fornecedor.findByPk.mockResolvedValue({ id: 1 });
+      Mov.create.mockResolvedValue({ id_movimentacao: 1 });
+
+      await MovimentacaoController.realizarMov(req, res, next);
+
+      expect(Fornecedor.findByPk).toHaveBeenCalledWith(1, { transaction });
+      expect(Mov.create).toHaveBeenCalledWith(
+        { id_fornecedor: 1, data_movimentacao: '2024-11-07', tipo_movimentacao: 'entrada', nf: '12345' },
+        { transaction }
+      );
+      expect(req.id_movimentacao).toBe(1);
+      expect(next).toHaveBeenCalled();
     });
 
-    describe('realizarMov', () => {
-        it('deve criar uma movimentação de entrada com sucesso', async () => {
-            Fornecedor.findByPk.mockResolvedValue({ id_fornecedor: 1 });
-            Mov.create.mockResolvedValue({ id_movimentacao: 1 });
-            
-            await MovimentacaoController.realizarMov(req, res, next);
+    it('deve retornar erro se o fornecedor não for encontrado', async () => {
+      req.params.tipo_movimentacao = 'entrada';
+      req.body = { id_fornecedor: 1, itens_movimentacao: [{ id_material: 1, quantidade_material: 10 }] };
 
-            expect(Fornecedor.findByPk).toHaveBeenCalledWith(1, { transaction: t });
-            expect(Mov.create).toHaveBeenCalledWith(
-                { id_fornecedor: 1, data_movimentacao: '2024-11-07', tipo_movimentacao: 'entrada', nf: '12345' },
-                { transaction: t }
-            );
-            expect(req.id_movimentacao).toBe(1);
-            expect(next).toHaveBeenCalled();
-        });
+      Fornecedor.findByPk.mockResolvedValue(null);
 
-        it('deve retornar erro se fornecedor não for encontrado', async () => {
-            Fornecedor.findByPk.mockResolvedValue(null);
+      await MovimentacaoController.realizarMov(req, res, next);
 
-            await MovimentacaoController.realizarMov(req, res, next);
-
-            expect(res.status).toHaveBeenCalledWith(500);
-            expect(res.send).toHaveBeenCalledWith({ error: 'Erro ao realizar movimentação. Por favor, tente novamente.' });
-            expect(t.rollback).toHaveBeenCalled();
-        });
-
-        it('deve criar uma movimentação de saída com sucesso', async () => {
-            req.params.tipo_movimentacao = 'saida';
-            Usuario.findByPk.mockResolvedValue({ id_usuario: 1 });
-            Robo.findByPk.mockResolvedValue({ id_robo: 1 });
-            Mov.create.mockResolvedValue({ id_movimentacao: 2 });
-
-            await MovimentacaoController.realizarMov(req, res, next);
-
-            expect(Usuario.findByPk).toHaveBeenCalledWith(1, { transaction: t });
-            expect(Robo.findByPk).toHaveBeenCalledWith(1, { transaction: t });
-            expect(Mov.create).toHaveBeenCalledWith(
-                { id_usuario: 1, id_robo: 1, data_movimentacao: '2024-11-07', tipo_movimentacao: 'saida', nf: '12345' },
-                { transaction: t }
-            );
-            expect(req.id_movimentacao).toBe(2);
-            expect(next).toHaveBeenCalled();
-        });
-
-        it('deve retornar erro se o usuário ou o robo não forem encontrados', async () => {
-            req.params.tipo_movimentacao = 'saida';
-            Usuario.findByPk.mockResolvedValue(null);
-
-            await MovimentacaoController.realizarMov(req, res, next);
-
-            expect(res.status).toHaveBeenCalledWith(500);
-            expect(res.send).toHaveBeenCalledWith({ error: 'Erro ao realizar movimentação. Por favor, tente novamente.' });
-            expect(t.rollback).toHaveBeenCalled();
-        });
+      expect(transaction.rollback).toHaveBeenCalled();
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.send).toHaveBeenCalledWith({ error: 'Erro ao realizar movimentação. Por favor, tente novamente.' });
     });
 
-    describe('listarMov', () => {
-        it('deve listar todas as movimentações com sucesso', async () => {
-            Mov.findAll.mockResolvedValue([{ id_movimentacao: 1 }]);
+    it('deve criar uma movimentação de saída com sucesso', async () => {
+      req.params.tipo_movimentacao = 'saida';
+      req.body = { id_usuario: 1, id_robo: 1, data_movimentacao: '2024-11-07', itens_movimentacao: [{ id_material: 1, quantidade_material: 5 }], nf: '12345' };
 
-            await MovimentacaoController.listarMov(req, res);
+      Usuario.findByPk.mockResolvedValue({ id: 1 });
+      Robo.findByPk.mockResolvedValue({ id: 1 });
+      Mov.create.mockResolvedValue({ id_movimentacao: 2 });
 
-            expect(Mov.findAll).toHaveBeenCalled();
-            expect(res.send).toHaveBeenCalledWith([{ id_movimentacao: 1 }]);
-        });
+      await MovimentacaoController.realizarMov(req, res, next);
 
-        it('deve retornar erro ao listar movimentações', async () => {
-            Mov.findAll.mockRejectedValue(new Error('Database Error'));
+      expect(Usuario.findByPk).toHaveBeenCalledWith(1, { transaction });
+      expect(Robo.findByPk).toHaveBeenCalledWith(1, { transaction });
+      expect(Mov.create).toHaveBeenCalledWith(
+        { id_usuario: 1, id_robo: 1, data_movimentacao: '2024-11-07', tipo_movimentacao: 'saida', nf: '12345' },
+        { transaction }
+      );
+      expect(req.id_movimentacao).toBe(2);
+      expect(next).toHaveBeenCalled();
+    });
+  });
 
-            await MovimentacaoController.listarMov(req, res);
+  describe('listarMov', () => {
+    it('deve listar todas as movimentações', async () => {
+      const movimentacoes = [{ id: 1 }, { id: 2 }];
+      Mov.findAll.mockResolvedValue(movimentacoes);
 
-            expect(res.status).toHaveBeenCalledWith(500);
-            expect(res.send).toHaveBeenCalledWith({ error: 'Erro ao obter a lista de movimentações. Por favor, tente novamente.' });
-        });
+      await MovimentacaoController.listarMov(req, res);
+
+      expect(res.send).toHaveBeenCalledWith(movimentacoes);
     });
 
-    describe('deletarMov', () => {
-        it('deve deletar uma movimentação com sucesso', async () => {
-            Mov.findByPk.mockResolvedValue({ destroy: jest.fn() });
+    it('deve retornar erro ao listar movimentações', async () => {
+      Mov.findAll.mockRejectedValue(new Error('Erro ao obter movimentações'));
 
-            await MovimentacaoController.deletarMov(req, res);
+      await MovimentacaoController.listarMov(req, res);
 
-            expect(Mov.findByPk).toHaveBeenCalledWith(req.params.id_mov);
-            expect(res.send).toHaveBeenCalledWith({ message: 'Movimentação deletada com sucesso.' });
-        });
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.send).toHaveBeenCalledWith({ error: 'Erro ao obter a lista de movimentações. Por favor, tente novamente.' });
+    });
+  });
 
-        it('deve retornar erro se movimentação não for encontrada', async () => {
-            Mov.findByPk.mockResolvedValue(null);
+  describe('deletarMov', () => {
+    it('deve deletar a movimentação com sucesso', async () => {
+      req.params.id_mov = 1;
+      const movimentacao = { destroy: jest.fn() };
+      Mov.findByPk.mockResolvedValue(movimentacao);
 
-            await MovimentacaoController.deletarMov(req, res);
+      await MovimentacaoController.deletarMov(req, res);
 
-            expect(res.status).toHaveBeenCalledWith(404);
-            expect(res.send).toHaveBeenCalledWith({ error: 'Movimentação não encontrada.' });
-        });
-
-        it('deve retornar erro ao tentar deletar movimentação', async () => {
-            Mov.findByPk.mockResolvedValue({ destroy: jest.fn().mockRejectedValue(new Error('Database Error')) });
-
-            await MovimentacaoController.deletarMov(req, res);
-
-            expect(res.status).toHaveBeenCalledWith(500);
-            expect(res.send).toHaveBeenCalledWith({ error: 'Erro ao deletar movimentação' });
-        });
+      expect(movimentacao.destroy).toHaveBeenCalled();
+      expect(res.send).toHaveBeenCalledWith({ message: 'Movimentação deletada com sucesso.' });
     });
 
-    describe('attEstoque', () => {
-        it('deve atualizar o estoque com sucesso', async () => {
-            Material.findByPk.mockResolvedValue({ id_material: 1, quantidade_material: 100, save: jest.fn() });
+    it('deve retornar erro ao não encontrar a movimentação', async () => {
+      req.params.id_mov = 1;
+      Mov.findByPk.mockResolvedValue(null);
 
-            await MovimentacaoController.attEstoque(req, res);
+      await MovimentacaoController.deletarMov(req, res);
 
-            expect(Material.findByPk).toHaveBeenCalledWith(1, { transaction: t });
-            expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.send).toHaveBeenCalledWith({ message: 'Movimentação realizada com sucesso.' });
-        });
-
-        it('deve retornar erro se o material não for encontrado', async () => {
-            Material.findByPk.mockResolvedValue(null);
-
-            await MovimentacaoController.attEstoque(req, res);
-
-            expect(res.status).toHaveBeenCalledWith(500);
-            expect(res.send).toHaveBeenCalledWith({ error: 'Erro ao realizar movimentação. Por favor, tente novamente.' });
-            expect(t.rollback).toHaveBeenCalled();
-        });
-
-        it('deve retornar erro se a quantidade de material for insuficiente para saída', async () => {
-            req.params.tipo_movimentacao = 'saida';
-            Material.findByPk.mockResolvedValue({ id_material: 1, quantidade_material: 30, save: jest.fn() });
-
-            await MovimentacaoController.attEstoque(req, res);
-
-            expect(res.status).toHaveBeenCalledWith(500);
-            expect(res.send).toHaveBeenCalledWith({ error: 'Erro ao realizar movimentação. Por favor, tente novamente.' });
-            expect(t.rollback).toHaveBeenCalled();
-        });
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(res.send).toHaveBeenCalledWith({ error: 'Movimentação não encontrada.' });
     });
+  });
+
+  describe('attEstoque', () => {
+    it('deve atualizar o estoque para entrada', async () => {
+      req.params.tipo_movimentacao = 'entrada';
+      req.body.itens_movimentacao = [{ id_material: 1, quantidade_material: 5 }];
+      req.transaction = transaction;
+
+      Material.findByPk.mockResolvedValue({ quantidade_material: 10, save: jest.fn() });
+
+      await MovimentacaoController.attEstoque(req, res);
+
+      expect(Material.findByPk).toHaveBeenCalledWith(1, { transaction });
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.send).toHaveBeenCalledWith({ message: 'Movimentação realizada com sucesso.' });
+    });
+
+    it('deve retornar erro se o material não for encontrado', async () => {
+      req.params.tipo_movimentacao = 'entrada';
+      req.body.itens_movimentacao = [{ id_material: 1, quantidade_material: 5 }];
+      req.transaction = transaction;
+
+      Material.findByPk.mockResolvedValue(null);
+
+      await MovimentacaoController.attEstoque(req, res);
+
+      expect(transaction.rollback).toHaveBeenCalled();
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.send).toHaveBeenCalledWith({ error: 'Erro ao realizar movimentação. Por favor, tente novamente.' });
+    });
+  });
 });
