@@ -22,7 +22,7 @@ module.exports = {
 
             if (!itens_movimentacao || itens_movimentacao.length === 0) {
 
-                throw new Error('Nenhum item adicionado na movimentação.');
+                return res.status(400).send({ error: "Nenhum item adicionado na movimentação." });
 
             }
 
@@ -115,6 +115,14 @@ module.exports = {
 
             const { tipo_movimentacao } = req.params
             const { itens_movimentacao } = req.body
+
+
+            if (!itens_movimentacao || itens_movimentacao.length === 0) {
+                console.error("Erro ao realizar movimentação", error);
+
+                return res.status(400).send({ error: "Nenhum item adicionado na movimentação." });
+
+            }
 
 
             for (const item of itens_movimentacao) {

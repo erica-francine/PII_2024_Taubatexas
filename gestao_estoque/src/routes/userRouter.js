@@ -15,7 +15,6 @@ router.post('/logout', (req,res)=>{
 })
 
 router.use(authController)
-
 router.get('/users', authProfile(['admin']), userController.listarUsuarios)
 
 router.post('/inativar', authProfile(['admin']), express.urlencoded({extended: true}), userController.inativarUsuario)

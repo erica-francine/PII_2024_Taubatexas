@@ -15,7 +15,8 @@ module.exports = {
 
             if (!itens_movimentacao || itens_movimentacao.length === 0) {
                 
-                throw new Error("Nenhum item foi fornecido para movimentação");
+                return res.status(400).send({ error: "Nenhum item foi fornecido para movimentação" });
+
             }
     
             const resultados = []

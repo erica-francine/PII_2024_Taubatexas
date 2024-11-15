@@ -148,8 +148,7 @@ module.exports = {
             maxAge: 3600000,
         });
 
-        res.send('Usuario logado');
-   },
+        res.status(200).send('Usuario logado')   },
 
    
 }

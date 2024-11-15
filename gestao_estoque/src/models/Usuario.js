@@ -1,5 +1,5 @@
 const { Model, DataTypes } = require('sequelize');
-
+ 
 class Usuarios extends Model {
     static init(sequelize) {
         super.init({

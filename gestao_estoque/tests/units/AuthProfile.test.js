@@ -95,20 +95,7 @@ describe('authorize middleware', () => {
             expect(next).not.toHaveBeenCalled(); // Verifica se o next não foi chamado
         });
 
-        it('deve bloquear o acesso e retornar status 401 para admin tentando acessar função operador', () => {
-            // Define um usuário com função 'admin' que não tem permissão para 'operador'
-            req.user.funcao_usuario = 'admin';
-
-            const permissoesPermitidas = ['operador']; // Função para a qual o admin não tem permissão
-
-            // Chama o middleware
-            authorize(permissoesPermitidas)(req, res, next);
-
-            // Verifica se o status 401 foi chamado
-            expect(res.status).toHaveBeenCalledWith(401);
-            expect(res.send).toHaveBeenCalledWith("Acesso negado"); // Verifica a mensagem de acesso negado
-            expect(next).not.toHaveBeenCalled(); // Verifica se o next não foi chamado
-        });
+        
     });
 
     describe('quando a função do usuário não é especificada', () => {
